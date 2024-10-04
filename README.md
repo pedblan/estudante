@@ -32,4 +32,4 @@ Selecione a tarefa desejada (transcrição ou resumo) e siga as instruções par
 
 Contato
 
-Desenvolvido por Pedro Duarte Blanco com base em gpt-4o e whisper-1, sob licença MIT.
+Desenvolvido por Pedro Duarte Blanco com base em gpt-4o e whisper-1, sob licença MIT - pedblan.wordpress.com e pedblan@gmail.com.
