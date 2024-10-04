@@ -5,10 +5,10 @@ Para aqueles que tiverem uma API key, o programa ainda resume textos em pdf ou d
 
 *Requisitos*
 
-ffmpeg (instalado automaticamente)
-Microsoft Word
-Para uso de API: 2 a 4 GB de RAM, processador básico (recomendado i5)
-Para uso de modelos Whisper locais: pelo menos 5GB de disco rígido e 8 a 16 GB de RAM, processador avançado (recomendado i7)
+- ffmpeg (instalado automaticamente)
+- Microsoft Word
+- Para uso de API: 2 a 4 GB de RAM, processador básico (recomendado i5)
+- Para uso de modelos Whisper locais: pelo menos 5GB de disco rígido e 8 a 16 GB de RAM, processador avançado (recomendado i7)
 
 *Funcionalidades*
 
@@ -30,6 +30,8 @@ A função Timestamp inclui a marcação do tempo do vídeo em que se tenha dado
 
 Selecione a tarefa desejada (transcrição ou resumo) e siga as instruções para enviar um arquivo ou inserir um link.
 
-Contato
 
-Desenvolvido por Pedro Duarte Blanco com base em gpt-4o e whisper-1, sob licença MIT - https://pedblan.wordpress.com e pedblan@gmail.com.
+Desenvolvido por Pedro Duarte Blanco com base em gpt-4o e whisper-1, sob licença MIT
+
+*Contato*
+https://pedblan.wordpress.com e pedblan@gmail.com
