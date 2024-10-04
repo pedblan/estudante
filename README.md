@@ -14,19 +14,19 @@ Para aqueles que tiverem uma API key, o programa ainda resume textos em pdf ou d
 
 *Funcionalidades*
 
-Transcrição de arquivos de áudio e vídeos do YouTube e similares, de qualquer duração. O programa divide o áudio em partes e depois combina as respectivas transcrições.
+- Transcrição de arquivos de áudio e vídeos do YouTube e similares, de qualquer duração. O programa divide o áudio em partes e depois combina as respectivas transcrições.
 Resumos de arquivos PDF e DOCX.
-Para as transcrições, você pode usar uma versão simplificada da API (interface de programação) da OpenAI (mais rápido e melhor, mas o serviço é pago) ou uma versão local do modelo Whisper.
-Caso você use a API, precisa usar uma "key" (uma espécie de senha), que pode obter em https://platform.openai.com/signup
-Este programa possibilita salvar a "key" de maneira NÃO criptografada. Não é a coisa mais segura do mundo, mas a conta OpenAI oferece vários mecanismos de controle de gastos. Na pior das hipóteses, alguém vai usar o GPT às suas custas, até o limite estabelecido.
-Caso queira usar Whisper, você pode escolher modelos de vários tamanhos. O sistema descarrega o modelo na primeira vez que você o usa.
-Tiny: rápido, porém tosco.
-Base: recomendado.
-Small: demora. Perca uma rodada.
-Medium: demora muito. Desative o protetor de tela e vá dar um passeio.
-Large (~3GB + processamento): coloque a transcrição no seu testamento, porque vai demorar a sua vida inteira!
-Certifique-se de que escolheu o idioma certo! Do contrário, a transcrição sai esquisita, não importa o modelo escolhido.
-A função Timestamp inclui a marcação do tempo do vídeo em que se tenha dado determinada fala transcrita. Ela pode engolir algumas palavras, porque os segundos são arredondados para fins de clareza.
+  - Para as transcrições, você pode usar uma versão simplificada da API (interface de programação) da OpenAI (mais rápido e melhor, mas o serviço é pago) ou uma versão local do modelo Whisper.
+  - Caso você use a API, precisa usar uma "key" (uma espécie de senha), que pode obter em https://platform.openai.com/signup
+- Este programa possibilita salvar a "key" de maneira NÃO criptografada. Não é a coisa mais segura do mundo, mas a conta OpenAI oferece vários mecanismos de controle de gastos. Na pior das hipóteses, alguém vai usar o GPT às suas custas, até o limite estabelecido.
+- Caso queira usar Whisper, você pode escolher modelos de vários tamanhos. O sistema descarrega o modelo na primeira vez que você o usa.
+  - Tiny: rápido, porém tosco.
+  - Base: recomendado.
+  - Small: demora. Perca uma rodada.
+  - Medium: demora muito. Desative o protetor de tela e vá dar um passeio.
+  - Large (~3GB + processamento): coloque a transcrição no seu testamento, porque vai demorar a sua vida inteira!
+- Certifique-se de que escolheu o idioma certo! Do contrário, a transcrição sai esquisita, não importa o modelo escolhido.
+- A função Timestamp inclui a marcação do tempo do vídeo em que se tenha dado determinada fala transcrita. Ela pode engolir algumas palavras, porque os segundos são arredondados para fins de clareza.
 
 *Como usar*
 
