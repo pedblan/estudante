@@ -1,0 +1,16 @@
+# Incluir o README.md e a licença
+include README.md
+include licenca.txt
+
+# Incluir o arquivo requirements.txt
+include requirements.txt
+
+# Incluir o estudante.py na raiz
+include estudante.py
+
+# Incluir todos os arquivos do diretório src
+graft src
+
+# Excluir arquivos compilados Python (.pyc) e diretórios de cache (__pycache__)
+global-exclude *.pyc
+global-exclude __pycache__
