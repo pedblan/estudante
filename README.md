@@ -1,6 +1,6 @@
 *Descrição*
 
-Digitar o seguinte no prompt de comando python: "python main.py"
+Digitar o seguinte no prompt de comando python: "python src/main.py"
 
 Este programa transcreve mídia (áudio e vídeo streaming) de qualquer duração por meio dos modelos de inteligência artificial da empresa OpenAI.
 Para aqueles que tiverem uma API key, o programa ainda resume textos em pdf ou docx. O conteúdo produzido é armazenado num arquivo .docx no desktop (área de trabalho, onde ficam os ícones) do computador. Se tudo der certo, o arquivo gerado é aberto automaticamente.
