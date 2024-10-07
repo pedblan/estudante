@@ -6,8 +6,7 @@
 # Este software é distribuído sob a Licença MIT.
 # Consulte o arquivo LICENSE para obter mais informações.
 
-from assist import *
-import tkinter as tk
+from src.assist import *
 import webbrowser
 import os
 

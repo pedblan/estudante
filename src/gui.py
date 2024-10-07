@@ -11,7 +11,6 @@ import os
 import sys
 import threading
 import tkinter as tk
-import webbrowser
 from tkinter import filedialog, messagebox
 from dotenv import load_dotenv
 import webbrowser
@@ -19,7 +18,7 @@ import webbrowser
 
 from PIL import Image, ImageTk
 
-from tarefas import youtube, audio, pdf_docx, abrir_leiame_html  # Importando funções do tarefas.py
+from src.tarefas import youtube, audio, pdf_docx, abrir_leiame_html  # Importando funções do tarefas.py
 
 # Carrega as variáveis de ambiente do arquivo .env
 load_dotenv()
@@ -294,7 +293,7 @@ def rodar():
     def load_image():
         try:
             # Abrir a imagem
-            image_path = recurso_caminho("b.png")
+            image_path = recurso_caminho("src/b.png")
             image = Image.open(image_path)
 
             # Definir as dimensões máximas

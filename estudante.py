@@ -9,9 +9,7 @@
 
 import platform
 import subprocess
-import os
-import threading
-from gui import rodar  # Importa a função que inicializa a interface
+from src.gui import rodar  # Importa a função que inicializa a interface
 
 # Função para verificar se o ffmpeg está instalado
 def verificar_ffmpeg_instalado():

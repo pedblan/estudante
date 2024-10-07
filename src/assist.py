@@ -13,14 +13,10 @@ import math
 import ffmpeg
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx import Document
-import re
 import fitz
-from proc import *
-from pathlib import Path
+from src.proc import *
 import re
 from docx.shared import Pt, Cm
-from docx.oxml.ns import qn
-from docx.oxml import OxmlElement
 import subprocess
 
 
