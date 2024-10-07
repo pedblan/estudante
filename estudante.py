@@ -15,7 +15,6 @@ from src.gui import rodar  # Importa a função que inicializa a interface
 def verificar_ffmpeg_instalado():
     try:
         subprocess.run(["ffmpeg", "-version"], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        print("FFmpeg está instalado.")
         return True
     except subprocess.CalledProcessError:
         print("FFmpeg não está instalado ou não está no PATH.")

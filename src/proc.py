@@ -11,11 +11,18 @@
 """Constam deste módulo todas as funções que empregam IA para processar as demandas."""
 from openai import OpenAI
 import whisper
+import os
 
-client = OpenAI()
+
 MODELO_ANALISE = "gpt-4o"
 MODELO_TRANSCRICAO_API = "whisper-1"  # Empregado quando API==True
 WHISPER_MODE = ['tiny', 'base', 'small', 'medium', 'large']  # Define o modelo Whisper como "base" por padrão
+
+def get_openai_client():
+    api_key = os.getenv("OPENAI_API_KEY")
+    if not api_key:
+        raise EnvironmentError("A chave da API OpenAI não foi encontrada nas variáveis de ambiente.")
+    return OpenAI(api_key=api_key)
 
 def tiktoken(texto, modelo=MODELO_ANALISE, limite_tokens=8192):
     """Verifica se o número de tokens de um texto excede o limite permitido."""
@@ -32,6 +39,7 @@ def tiktoken(texto, modelo=MODELO_ANALISE, limite_tokens=8192):
 
 def resumir_texto(texto, modelo=MODELO_ANALISE, modo='geral', instrucao_personalizada=None):
     """Recorre à API da OpenAI para resumir texto segundo instrução do usuário. Retorna texto resumido."""
+    client = get_openai_client()
     try:
         if modo == 'geral':
             instrucao = (
@@ -69,6 +77,7 @@ def resumir_texto(texto, modelo=MODELO_ANALISE, modo='geral', instrucao_personal
 
 def transcrever(arquivo_de_audio, idioma, api):
     """Recebe um arquivo de áudio e realiza a transcrição usando API da OpenAI ou Whisper Local."""
+    client = get_openai_client()
     try:
         if api:
             with open(arquivo_de_audio, "rb") as audio_file:

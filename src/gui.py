@@ -14,10 +14,7 @@ import tkinter as tk
 from tkinter import filedialog, messagebox
 from dotenv import load_dotenv
 import webbrowser
-
-
 from PIL import Image, ImageTk
-
 from src.tarefas import youtube, audio, pdf_docx, abrir_leiame_html  # Importando funções do tarefas.py
 
 # Carrega as variáveis de ambiente do arquivo .env
