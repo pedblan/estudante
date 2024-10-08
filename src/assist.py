@@ -252,6 +252,7 @@ def transcrever_partes(lista_de_partes, idioma, api, duracao_total, max_palavras
     tempo_atual = 0
 
     for i, parte in enumerate(lista_de_partes):
+        print(f"Analisando parte {i} de {len(lista_de_partes)}.")
         try:
             # Transcrever a parte
             trecho_transcrito = transcrever(parte, idioma, api)
