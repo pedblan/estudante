@@ -44,4 +44,4 @@ Selecione a tarefa desejada (transcrição ou resumo) e siga as instruções par
 Desenvolvido por Pedro Duarte Blanco com base em gpt-4o e whisper-1, sob licença MIT
 
 *Contato*
-https://pedblan.wordpress.com e pedblan@gmail.com
+https://pedblan.substack.com e pedblan@gmail.com
