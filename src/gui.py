@@ -466,5 +466,5 @@ def recurso_caminho(caminho_relativo):
     return os.path.join(base_path, caminho_relativo)
 
 def abrir_leiame_html():
-    leiame_path = recurso_caminho("leiame.html")
+    leiame_path = recurso_caminho("src/leiame.html")
     webbrowser.open(f'file://{leiame_path}')
