@@ -44,26 +44,26 @@ Este programa transcreve mídia (áudio e vídeo streaming) de qualquer duraçã
 
 - Abra o PowerShell (ou o Prompt de Comando) e execute os seguintes comandos:
 
- - Clone o repositório:
- git clone https://github.com/pedblan/estudante.git
+  - Clone o repositório:
+  git clone https://github.com/pedblan/estudante.git
  
- - Acesse o diretório do projeto:
- cd estudante
+  - Acesse o diretório do projeto:
+  cd estudante
  
- - Crie um ambiente virtual (venv):
- python -m venv venv
+  - Crie um ambiente virtual (venv):
+  python -m venv venv
  
- - Ative o ambiente virtual (no PowerShell):
- ./venv/Scripts/Activate.ps1
+  - Ative o ambiente virtual (no PowerShell):
+  ./venv/Scripts/Activate.ps1
  
- - Ou ative no Prompt de Comando (cmd.exe):
- venv\Scripts\activate.bat
+  - Ou ative no Prompt de Comando (cmd.exe):
+  venv\Scripts\activate.bat
  
- - Instale as dependências:
- pip install -r requirements.txt
+  - Instale as dependências:
+  pip install -r requirements.txt
  
- - Crie um atalho para facilitar o uso (opcional):
- echo "venv\Scripts\Activate.ps1; python estudante.py" > estudante.bat
+  - Crie um atalho para facilitar o uso (opcional):
+  echo "venv\Scripts\Activate.ps1; python estudante.py" > estudante.bat
 
 
 **Funcionalidades**
