@@ -16,29 +16,29 @@ Este programa transcreve mídia (áudio e vídeo streaming) de qualquer duraçã
 
 - Abra o terminal e execute os seguintes comandos:
 
- - Clone o repositório:
- git clone https://github.com/pedblan/estudante.git
+  - Clone o repositório:
+  git clone https://github.com/pedblan/estudante.git
  
- - Acesse o diretório do projeto:
- cd estudante
+  - Acesse o diretório do projeto:
+  cd estudante
  
- - Crie um ambiente virtual (venv):
- python3 -m venv venv
+  - Crie um ambiente virtual (venv):
+  python3 -m venv venv
  
- - Ative o ambiente virtual:
- source venv/bin/activate
+  - Ative o ambiente virtual:
+  source venv/bin/activate
  
- - Instale as dependências:
- pip install -r requirements.txt
+  - Instale as dependências:
+  pip install -r requirements.txt
  
- - (Opcional) Crie um atalho para facilitar o uso:
- echo "source venv/bin/activate && python3 estudante.py" > estudante.sh
+  - Crie um atalho para facilitar o uso (opcional) :
+  echo "source venv/bin/activate && python3 estudante.py" > estudante.sh
  
- - Dê permissão de execução ao atalho:
- chmod +x estudante.sh
+  - Dê permissão de execução ao atalho:
+  chmod +x estudante.sh
  
- - Digitar no terminal o seguinte comando:
-   ./estudante.sh
+  - Para rodar o programa, digite no terminal o seguinte comando:
+  ./estudante.sh
 
 *Windows*
 
@@ -62,7 +62,7 @@ Este programa transcreve mídia (áudio e vídeo streaming) de qualquer duraçã
  - Instale as dependências:
  pip install -r requirements.txt
  
- - (Opcional) Crie um atalho para facilitar o uso:
+ - Crie um atalho para facilitar o uso (opcional):
  echo "venv\Scripts\Activate.ps1; python estudante.py" > estudante.bat
 
 
