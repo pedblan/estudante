@@ -16,25 +16,25 @@ Este programa transcreve mídia (áudio e vídeo streaming) de qualquer duraçã
 
 - Abra o terminal e execute os seguintes comandos:
 
- - Clone o repositório
+ - Clone o repositório:
  git clone https://github.com/pedblan/estudante.git
  
- - Acesse o diretório do projeto
+ - Acesse o diretório do projeto:
  cd estudante
  
- - Crie um ambiente virtual (venv)
+ - Crie um ambiente virtual (venv):
  python3 -m venv venv
  
- - Ative o ambiente virtual
+ - Ative o ambiente virtual:
  source venv/bin/activate
  
- - Instale as dependências
+ - Instale as dependências:
  pip install -r requirements.txt
  
- - (Opcional) Crie um atalho para facilitar o uso
+ - (Opcional) Crie um atalho para facilitar o uso:
  echo "source venv/bin/activate && python3 estudante.py" > estudante.sh
  
- - Dê permissão de execução ao atalho
+ - Dê permissão de execução ao atalho:
  chmod +x estudante.sh
  
  - Digitar no terminal o seguinte comando:
@@ -44,27 +44,26 @@ Este programa transcreve mídia (áudio e vídeo streaming) de qualquer duraçã
 
 - Abra o PowerShell (ou o Prompt de Comando) e execute os seguintes comandos:
 
- - Clone o repositório
+ - Clone o repositório:
  git clone https://github.com/pedblan/estudante.git
  
- - Acesse o diretório do projeto
+ - Acesse o diretório do projeto:
  cd estudante
  
- - Crie um ambiente virtual (venv)
+ - Crie um ambiente virtual (venv):
  python -m venv venv
  
- - Ative o ambiente virtual (no PowerShell)
+ - Ative o ambiente virtual (no PowerShell):
  ./venv/Scripts/Activate.ps1
  
  - Ou ative no Prompt de Comando (cmd.exe):
  venv\Scripts\activate.bat
  
- - Instale as dependências
+ - Instale as dependências:
  pip install -r requirements.txt
  
- - (Opcional) Crie um atalho para facilitar o uso
- - Substitua 'estudante.py' pelo script principal que você deseja executar
- echo "venv\Scripts\Activate.ps1; python estudante.py" > start.bat
+ - (Opcional) Crie um atalho para facilitar o uso:
+ echo "venv\Scripts\Activate.ps1; python estudante.py" > estudante.bat
 
 
 **Funcionalidades**
