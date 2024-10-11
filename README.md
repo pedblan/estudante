@@ -72,7 +72,7 @@ Este programa transcreve mídia (áudio e vídeo streaming) de qualquer duraçã
   - Resumos de arquivos PDF e DOCX.
     - Para as transcrições, você pode usar uma versão simplificada da API (interface de programação) da OpenAI (mais rápido e melhor, mas o serviço é pago) ou uma versão local do modelo Whisper.
     - Caso você use a API, precisa usar uma "key" (uma espécie de senha), que pode obter em [OpenAI](https://platform.openai.com/signup).
-  - Este programa possibilita salvar a "key" de maneira **NÃO criptografada**. Não é a coisa mais segura do mundo, mas a conta OpenAI oferece vários mecanismos de controle de gastos. Na pior das hipóteses, alguém vai usar o GPT às suas custas, até o limite estabelecido.
+  - Este programa possibilita salvar a "key" de maneira **NÃO** criptografada. Não é a coisa mais segura do mundo, mas a conta OpenAI oferece vários mecanismos de controle de gastos. Na pior das hipóteses, alguém vai usar o GPT às suas custas, até o limite estabelecido.
   - Caso queira usar Whisper, você pode escolher modelos de vários tamanhos. O sistema descarrega o modelo na primeira vez que você o usa.
     - **Tiny**: rápido, porém tosco.
     - **Base**: recomendado.
