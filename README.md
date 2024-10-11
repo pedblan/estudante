@@ -2,13 +2,20 @@
 
 Este programa transcreve mídia (áudio e vídeo streaming) de qualquer duração por meio dos modelos de inteligência artificial da empresa OpenAI. Para aqueles que tiverem uma API key, o programa ainda resume textos em pdf ou docx. O conteúdo produzido é armazenado num arquivo .docx no desktop (área de trabalho, onde ficam os ícones) do computador. Se tudo der certo, o arquivo gerado é aberto automaticamente.
 
+**Requisitos**
+
+  - Python 3.6, Git
+  - ffmpeg (instalado automaticamente)
+  - Microsoft Word
+  - Para uso de API: 2 a 4 GB de RAM, processador básico (recomendado i5)
+  - Para uso de modelos Whisper locais: pelo menos 5GB de disco rígido e 8 a 16 GB de RAM, processador avançado (recomendado i7)
+
 **Instalação**
 
 *MacOS/Linux*
 
 - Abra o terminal e execute os seguintes comandos:
 
- ```bash
  - Clone o repositório
  git clone https://github.com/pedblan/estudante.git
  
@@ -56,17 +63,9 @@ Este programa transcreve mídia (áudio e vídeo streaming) de qualquer duraçã
  pip install -r requirements.txt
  
  - (Opcional) Crie um atalho para facilitar o uso
- - Substitua 'nome_do_script.py' pelo script principal que você deseja executar
- echo "venv\Scripts\Activate.ps1; python nome_do_script.py" > start.bat
+ - Substitua 'estudante.py' pelo script principal que você deseja executar
+ echo "venv\Scripts\Activate.ps1; python estudante.py" > start.bat
 
-
-**Requisitos**
-
-  - Python 3.6, Git
-  - ffmpeg (instalado automaticamente)
-  - Microsoft Word
-  - Para uso de API: 2 a 4 GB de RAM, processador básico (recomendado i5)
-  - Para uso de modelos Whisper locais: pelo menos 5GB de disco rígido e 8 a 16 GB de RAM, processador avançado (recomendado i7)
 
 **Funcionalidades**
 
