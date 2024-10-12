@@ -4,7 +4,7 @@ Este programa transcreve mídia (áudio e vídeo streaming) de qualquer duraçã
 
 **Requisitos**
 
-  - Python 3.6, Git
+  - Python 3.6
   - ffmpeg (instalado automaticamente)
   - Microsoft Word
   - Para uso de API: 2 a 4 GB de RAM, processador básico (recomendado i5)
