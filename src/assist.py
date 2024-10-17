@@ -21,10 +21,12 @@ import subprocess
 
 
 
-# Definir a pasta temporária e o caminho de destino (Desktop)
+# Definir a pasta temporária e o caminho de destino
 TEMP_FOLDER = 'temp'
 os.makedirs(TEMP_FOLDER, exist_ok=True)  # Cria a pasta 'temp' se não existir
-PASTA_DESTINO = os.path.join(os.path.expanduser('~'), 'Desktop')  # Desktop como padrão
+PASTA_DESTINO = 'saida'
+os.makedirs(PASTA_DESTINO, exist_ok=True)  # Cria a pasta 'temp' se não existir
+
 
 def download_yt(youtube_url):
     """Extrai áudio de vídeo de streaming e o grava em temp. Retorna o título do vídeo e o arquivo de áudio temporário."""
