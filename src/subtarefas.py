@@ -6,6 +6,7 @@
 # Este software é distribuído sob a Licença MIT.
 # Consulte o arquivo LICENSE para obter mais informações.
 
+"""Este script contém funções que são empregadas nas tarefas principais do aplicativo."""
 
 import yt_dlp
 import os
@@ -14,12 +15,10 @@ import ffmpeg
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx import Document
 import fitz
-from src.proc import *
+from src.logica_ia import *
 import re
 from docx.shared import Pt, Cm
 import subprocess
-
-
 
 # Definir a pasta temporária e o caminho de destino
 TEMP_FOLDER = 'temp'

@@ -6,6 +6,7 @@
 # Este software é distribuído sob a Licença MIT.
 # Consulte o arquivo LICENSE para obter mais informações.
 
+"""Este script contém a interface gráfica do aplicativo."""
 
 import os
 import sys
@@ -15,7 +16,7 @@ from tkinter import filedialog, messagebox
 from dotenv import load_dotenv
 import webbrowser
 from PIL import Image, ImageTk
-from src.tarefas import youtube, audio, pdf_docx, abrir_leiame_html  # Importando funções do tarefas.py
+from src.tarefas_principais import youtube, audio, pdf_docx, abrir_leiame_html  # Importando funções do tarefas_principais.py
 
 # Carrega as variáveis de ambiente do arquivo .env
 load_dotenv()

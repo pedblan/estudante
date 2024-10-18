@@ -4,8 +4,9 @@ Este programa transcreve mídia (áudio e vídeo streaming) de qualquer duraçã
 
 **Requisitos**
 
-  - Python 3.6
-  - ffmpeg (instalado automaticamente)
+  - Python até versão 3.12.2
+  - Git
+  - ffmpeg
   - Microsoft Word
   - Para uso de API: 2 a 4 GB de RAM, processador básico (recomendado i5)
   - Para uso de modelos Whisper locais: pelo menos 5GB de disco rígido e 8 a 16 GB de RAM, processador avançado (recomendado i7)

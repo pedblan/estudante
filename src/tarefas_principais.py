@@ -6,7 +6,9 @@
 # Este software é distribuído sob a Licença MIT.
 # Consulte o arquivo LICENSE para obter mais informações.
 
-from src.assist import *
+"""Este script contém as tarefas principais do aplicativo: transcrever arquivo de áudio, transcrever vídeo de YouTube, resumir documento e abrir arquivo de Leia-me."""
+
+from src.subtarefas import *
 import webbrowser
 import os
 

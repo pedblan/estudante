@@ -6,9 +6,8 @@
 # Este software é distribuído sob a Licença MIT.
 # Consulte o arquivo LICENSE para obter mais informações.
 
+"""Constam deste script todas as funções que empregam IA para processar as demandas."""
 
-
-"""Constam deste módulo todas as funções que empregam IA para processar as demandas."""
 from openai import OpenAI
 import whisper
 import os

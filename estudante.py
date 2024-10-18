@@ -7,7 +7,7 @@
 # Consulte o arquivo LICENSE para obter mais informações.
 
 import subprocess
-from src.gui import rodar  # Importa a função que inicializa a interface
+from src.interface import rodar  # Importa a função que inicializa a interface
 
 # Função para verificar se o ffmpeg está instalado
 def verificar_ffmpeg_instalado():
