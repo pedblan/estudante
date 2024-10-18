@@ -79,7 +79,7 @@ Este programa transcreve mídia (áudio e vídeo streaming) de qualquer duraçã
     - **Base**: recomendado.
     - **Small**: demora. Perca uma rodada.
     - **Medium**: demora muito. Desative o protetor de tela e vá dar um passeio.
-    - **Large** (~3GB + processamento): coloque a transcrição no seu testamento, porque vai demorar a sua vida inteira!
+    - **Large** (~3GB de download + processamento): coloque a transcrição no seu testamento, porque vai demorar a sua vida inteira!
   - Certifique-se de que escolheu o idioma certo! Do contrário, a transcrição sai esquisita, não importa o modelo escolhido.
   - A função **Timestamp** inclui a marcação do tempo do vídeo em que se tenha dado determinada fala transcrita. Ela pode engolir algumas palavras, porque os segundos são arredondados para fins de clareza.
 
