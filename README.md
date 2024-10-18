@@ -4,8 +4,9 @@ Este programa transcreve mídia (áudio e vídeo streaming) de qualquer duraçã
 
 **Requisitos**
 
-  - Python 3.6
-  - ffmpeg (instalado automaticamente)
+  - Python 3.12.2
+  - ffmpeg
+  - Git
   - Microsoft Word
   - Para uso de API: 2 a 4 GB de RAM, processador básico (recomendado i5)
   - Para uso de modelos Whisper locais: pelo menos 5GB de disco rígido e 8 a 16 GB de RAM, processador avançado (recomendado i7)
@@ -84,7 +85,7 @@ Este programa transcreve mídia (áudio e vídeo streaming) de qualquer duraçã
 
 **Como usar**
 
-  - Selecione a tarefa desejada (transcrição ou resumo) e siga as instruções para enviar um arquivo ou inserir um link.
+  - Selecione a tarefa desejada (transcrição ou resumo) e siga as instruções para enviar um arquivo ou inserir um link. O arquivo docx gerado é salvo na pasta "saida".
 
 Desenvolvido por Pedro Duarte Blanco com base em gpt-4o e whisper-1, sob licença MIT.
 
