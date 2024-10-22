@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import filedialog
-from tarefas_principais import pdf_docx
+from src.tarefas_principais import pdf_docx
 
 
 class ResumoGUI:
@@ -18,15 +18,22 @@ class ResumoGUI:
         tk.Radiobutton(root, text="Modo Jurisprudência", variable=self.modo_var, value="jurisprudencia").pack()
         tk.Radiobutton(root, text="Modo Personalizado", variable=self.modo_var, value="personalizado").pack()
 
-        # Campo de instrução personalizada
+        # Campo de instrução personalizada (inicialmente escondido)
         self.instrucao_personalizada_text = tk.Text(root, height=4, width=50)
-        self.instrucao_personalizada_text.pack()
+        self.instrucao_personalizada_text.pack_forget()
+        self.modo_var.trace('w', self.toggle_instrucao_personalizada)
 
         # Botão Enviar
         tk.Button(root, text="Enviar", command=self.enviar_resumo).pack(pady=10)
 
     def selecionar_pdf_file(self):
         self.pdf_file_path = filedialog.askopenfilename(filetypes=[("PDF Files", "*.pdf"), ("Word Files", "*.docx")])
+
+    def toggle_instrucao_personalizada(self, *args):
+        if self.modo_var.get() == 'personalizado':
+            self.instrucao_personalizada_text.pack(pady=10)
+        else:
+            self.instrucao_personalizada_text.pack_forget()
 
     def enviar_resumo(self):
         # Lógica para processar o PDF/DOCX

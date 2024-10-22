@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import filedialog
-from tarefas_principais import pdf_ocr
+from src.tarefas_principais import pdf_ocr
 
 
 class OCRGUI:

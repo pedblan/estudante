@@ -8,7 +8,7 @@
 
 """Este script contém as tarefas principais do aplicativo: transcrever arquivo de áudio, transcrever vídeo de YouTube, resumir documento e abrir arquivo de Leia-me."""
 
-from subtarefas import *
+from src.subtarefas import *
 import webbrowser
 import os
 
@@ -109,3 +109,10 @@ def abrir_leiame_html():
         webbrowser.open(f"file://{leiame_path}")
     else:
         print("Arquivo LEIAME não encontrado.")
+
+
+def verificar_requisitos_sistema():
+    if verificar_ffmpeg_instalado():
+        if verificar_tesseract_instalado():
+            return True
+
