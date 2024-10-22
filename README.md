@@ -7,6 +7,7 @@ Este programa transcreve mídia (áudio e vídeo streaming) de qualquer duraçã
   - Python até versão 3.12.2
   - Git
   - ffmpeg
+  - tesseract
   - Microsoft Word
   - Para uso de API: 2 a 4 GB de RAM, processador básico (recomendado i5)
   - Para uso de modelos Whisper locais: pelo menos 5GB de disco rígido e 8 a 16 GB de RAM, processador avançado (recomendado i7)
