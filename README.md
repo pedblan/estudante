@@ -71,6 +71,7 @@ Este programa transcreve mídia (áudio e vídeo streaming) de qualquer duraçã
 **Funcionalidades**
 
   - Transcrição de arquivos de áudio e vídeos do YouTube e similares, de qualquer duração. O programa divide o áudio em partes e depois combina as respectivas transcrições.
+  - Conversão de arquivos PDF fotografados em DOCX.
   - Resumos de arquivos PDF e DOCX.
     - Para as transcrições, você pode usar uma versão simplificada da API (interface de programação) da OpenAI (mais rápido e melhor, mas o serviço é pago) ou uma versão local do modelo Whisper.
     - Caso você use a API, precisa usar uma "key" (uma espécie de senha), que pode obter em [OpenAI](https://platform.openai.com/signup).

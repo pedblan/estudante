@@ -26,7 +26,7 @@ import io
 # Definir a pasta temporária e o caminho de destino
 TEMP_FOLDER = 'temp'
 os.makedirs(TEMP_FOLDER, exist_ok=True)  # Cria a pasta 'temp' se não existir
-PASTA_DESTINO = 'saida'
+PASTA_DESTINO = './saida'
 os.makedirs(PASTA_DESTINO, exist_ok=True)  # Cria a pasta 'temp' se não existir
 
 
@@ -328,67 +328,4 @@ def reconhecer_ocr(caminho_arquivo):
     return titulo, texto_revisado
 
 
-def load_image(image_path, max_width=None, max_height=None):
 
-    try:
-        # Abrir a imagem
-        image = Image.open(image_path)
-
-        # Definir as dimensões máximas, se especificadas
-        if max_width and max_height:
-            original_width, original_height = image.size
-            ratio = min(max_width / original_width, max_height / original_height)
-
-            # Se a imagem for maior que o tamanho máximo, redimensionar
-            if ratio < 1:
-                new_width = int(original_width * ratio)
-                new_height = int(original_height * ratio)
-                image = image.resize((new_width, new_height), Image.LANCZOS)
-
-        # Converter para PhotoImage
-        image_tk = ImageTk.PhotoImage(image)
-
-        # Retornar a imagem configurada para ser usada no Label (o Label deve ser criado no script que usa tkinter)
-        return image_tk
-
-    except Exception as e:
-        print(f"Erro ao carregar imagem: {str(e)}")
-        return None
-
-def verificar_ffmpeg_instalado():
-    try:
-        subprocess.run(["ffmpeg", "-version"], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        return True
-    except (subprocess.CalledProcessError, FileNotFoundError):
-        print("FFmpeg não está instalado ou não está no PATH. Instale o ffmpeg. Disponível em https://www.ffmpeg.org. Caso o instalador pergunte, peça para adicionar o programa à variável de ambiente PATH.")
-        return False
-
-def verificar_tesseract_instalado():
-    import subprocess
-    try:
-        subprocess.run(["tesseract", "--version"], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        return True
-    except (subprocess.CalledProcessError, FileNotFoundError):
-        print("Tesseract OCR não está instalado ou não está no PATH. Instale o Tesseract OCR. Disponível em https://github.com/tesseract-ocr/tesseract. Caso o instalador pergunte, peça para adicionar o programa à variável de ambiente PATH.")
-        return False
-
-
-def configurar_log(tk, root):
-    """Configura um frame de log na janela root."""
-
-    # Frame do log
-    log_frame = tk.Frame(root)
-    log_text = tk.Text(log_frame, height=15, width=80)
-    log_text.pack(side=tk.LEFT, padx=5)
-    log_scrollbar = tk.Scrollbar(log_frame, command=log_text.yview)
-    log_scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
-    log_text.config(yscrollcommand=log_scrollbar.set)
-
-    # Função para exibir/ocultar o log
-    def toggle_log():
-        if log_frame.winfo_ismapped():
-            log_frame.pack_forget()
-        else:
-            log_frame.pack(pady=5)
-
-    return log_frame, log_text, toggle_log
