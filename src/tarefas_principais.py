@@ -10,7 +10,7 @@
 
 from src.subtarefas import *
 import webbrowser
-import os
+from src.requisitos import *
 
 
 def youtube(youtube_url, idioma, api, max_palavras, com_timestamp):
@@ -111,7 +111,19 @@ def abrir_leiame_html():
         print("Arquivo LEIAME não encontrado.")
 
 
+def revisar_docx(caminho_arquivo, idioma):
+    try:
+        titulo, doc = revisar(caminho_arquivo, idioma)
+        caminho_arquivo_salvo = gravar_documento(titulo, doc)
+        return abrir_doc_produzido(caminho_arquivo_salvo)
+    except Exception as e:
+        print(f"Erro ao processar DOCX: {str(e)}")
+        return False
+
+
 def verificar_requisitos_sistema():
+    if not verificar_api_key():
+        print("OpenAI API KEY não encontrada na variável de ambiente. Iniciando versão lite do programa.")
     if verificar_ffmpeg_instalado():
         if verificar_tesseract_instalado():
             return True

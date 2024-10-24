@@ -1,3 +1,12 @@
+import subprocess
+import os
+
+def verificar_api_key():
+    api_key = os.getenv('OPENAI_API_KEY')
+    if api_key is not None:
+        return True
+    return False
+
 def verificar_ffmpeg_instalado():
     try:
         subprocess.run(["ffmpeg", "-version"], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)

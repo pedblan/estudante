@@ -1,7 +1,9 @@
-
+from PIL import Image, ImageTk
+from tkinter import filedialog, messagebox
+from dotenv import load_dotenv
+import os
 
 def load_image(image_path, max_width=None, max_height=None):
-
     try:
         # Abrir a imagem
         image = Image.open(image_path)
@@ -49,7 +51,7 @@ def configurar_log(tk, root):
     return log_frame, log_text, toggle_log
 
   # Função para mostrar o prompt para inserir a OpenAI API Key com botão de ajuda
-    def show_api_key_prompt():
+    def show_api_key_prompt(app):
         """Abre um prompt para o usuário inserir a OpenAI API Key com a opção de ajuda."""
         key_prompt_window = tk.Toplevel(app)
         key_prompt_window.title("Inserir OpenAI API Key")

@@ -7,14 +7,14 @@
 # Consulte o arquivo LICENSE para obter mais informações.
 
 from src.tarefas_principais import verificar_requisitos_sistema
-from src.gui_main import MainGUI
+from src.gui.main import MainGUI
 
 
 def main():
     if verificar_requisitos_sistema():
         import tkinter as tk
         root = tk.Tk()
-        app = MainGUI(root)
+        MainGUI(root)
         root.mainloop()
           # Chama a função de iniciar a interface, que agora está em outro arquivo
 

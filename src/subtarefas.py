@@ -9,19 +9,18 @@
 """Este script contém funções que são empregadas nas tarefas principais do aplicativo."""
 
 import yt_dlp
-import os
 import math
 import ffmpeg
-from docx.enum.text import WD_ALIGN_PARAGRAPH
-from docx import Document
 import fitz
 from src.logica_ia import *
 import re
 from docx.shared import Pt, Cm
 import subprocess
 import pytesseract
-from PIL import Image, ImageTk
+from PIL import Image
 import io
+from docx.enum.text import WD_ALIGN_PARAGRAPH
+from docx import Document
 
 # Definir a pasta temporária e o caminho de destino
 TEMP_FOLDER = 'temp'
@@ -167,7 +166,6 @@ def abrir_doc_produzido(caminho_arquivo):
     except Exception as e:
         print(f"Erro ao tentar abrir o arquivo: {str(e)}")
         return None
-
 
 
 def gravar_audio():
@@ -326,6 +324,7 @@ def reconhecer_ocr(caminho_arquivo):
     titulo = os.path.splitext(os.path.basename(caminho_arquivo))[0]
 
     return titulo, texto_revisado
+
 
 
 

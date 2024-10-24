@@ -16,7 +16,7 @@ api_available = api_key is not None
 class TranscricaoGUI:
     def __init__(self, root):
         self.root = root
-        self.root.title("Transcrição de Áudio/Vídeo")
+        self.root.title("Transcrever")
 
         # Variáveis de controle
         self.media_type_var = tk.StringVar(value="audio")

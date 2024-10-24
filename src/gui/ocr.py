@@ -6,7 +6,7 @@ from src.tarefas_principais import pdf_ocr
 class OCRGUI:
     def __init__(self, root):
         self.root = root
-        self.root.title("OCR de Documentos PDF")
+        self.root.title("OCR")
 
         # Frame para upload de PDF
         tk.Label(root, text="Escolha o arquivo PDF:").pack()

@@ -7,6 +7,10 @@
 # Consulte o arquivo LICENSE para obter mais informações.
 
 """Constam deste script todas as funções que empregam IA para processar as demandas."""
+import spacy
+from docx import Document
+from docx.oxml import parse_xml
+from docx.oxml.ns import nsdecls
 
 from openai import OpenAI
 import whisper
@@ -124,3 +128,42 @@ def ajustar_texto(texto, modelo=MODELO_ANALISE):
 
 def dividir_texto(texto):
     ...
+
+
+def revisar(caminho_arquivo, idioma):
+    if idioma == 'pt':
+        nlp = spacy.load('pt_core_news_md')
+    if idioma == 'en':
+        nlp = spacy.load('en_core_web_md')
+    def is_passive(verb):
+        return 'Voice=Pass' in verb.morph
+    def add_highlight(run):
+        highlight = parse_xml(r'<w:highlight {} w:val="yellow"/>'.format(nsdecls('w')))
+        run._r.get_or_add_rPr().append(highlight)
+
+    doc = Document(caminho_arquivo)
+
+    for para in doc.paragraphs:
+        doc_para = nlp(para.text)
+        runs = []
+
+        # Percorre cada token e aplica o destaque conforme necessário
+        for token in doc_para:
+            run = para.add_run(token.text)
+            if token.pos_ in ['ADJ', 'ADV'] or (token.pos_ == 'VERB' and is_passive(token)):
+                add_highlight(run)
+            runs.append(run)
+
+            # Adiciona o espaço em branco após o token
+            if token.whitespace_:
+                run = para.add_run(token.whitespace_)
+                runs.append(run)
+
+        # Substitui o conteúdo do parágrafo preservando a formatação original
+        para.clear()
+        for run in runs:
+            para._element.append(run._element)
+
+    titulo = os.path.splitext(os.path.basename(caminho_arquivo))[0]
+
+    return titulo, doc

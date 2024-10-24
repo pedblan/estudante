@@ -8,6 +8,7 @@ Este programa transcreve mídia (áudio e vídeo streaming) de qualquer duraçã
   - Git
   - ffmpeg
   - tesseract
+  - modelos spaCy (v. instruções de instalação)
   - Microsoft Word
   - Para uso de API: 2 a 4 GB de RAM, processador básico (recomendado i5)
   - Para uso de modelos Whisper locais: pelo menos 5GB de disco rígido e 8 a 16 GB de RAM, processador avançado (recomendado i7)
@@ -32,6 +33,10 @@ Este programa transcreve mídia (áudio e vídeo streaming) de qualquer duraçã
  
   - Instale as dependências:
   pip install -r requirements.txt
+
+  - Baixe os modelos spaCy:
+  python -m spacy download pt_core_news_md
+  python -m spacy download en_core_web_md
  
   - Crie um atalho para facilitar o uso (opcional) :
   echo "source venv/bin/activate && python3 estudante.py" > estudante.sh
@@ -63,6 +68,10 @@ Este programa transcreve mídia (áudio e vídeo streaming) de qualquer duraçã
  
   - Instale as dependências:
   pip install -r requirements.txt
+
+  - Baixe os modelos spaCy:
+  python -m spacy download pt_core_news_md
+  python -m spacy download en_core_web_md
  
   - Crie um atalho para facilitar o uso (opcional):
   echo "venv\Scripts\Activate.ps1; python estudante.py" > estudante.bat
@@ -84,6 +93,8 @@ Este programa transcreve mídia (áudio e vídeo streaming) de qualquer duraçã
     - **Large** (~3GB de download + processamento): coloque a transcrição no seu testamento, porque vai demorar a sua vida inteira!
   - Certifique-se de que escolheu o idioma certo! Do contrário, a transcrição sai esquisita, não importa o modelo escolhido.
   - A função **Timestamp** inclui a marcação do tempo do vídeo em que se tenha dado determinada fala transcrita. Ela pode engolir algumas palavras, porque os segundos são arredondados para fins de clareza.
+  - Editor:
+    - Num documento Word, marca em amarelo adjetivos, advérbios e verbos na voz passiva, para revisão.
 
 **Como usar**
 

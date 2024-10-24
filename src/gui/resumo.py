@@ -6,7 +6,7 @@ from src.tarefas_principais import pdf_docx
 class ResumoGUI:
     def __init__(self, root):
         self.root = root
-        self.root.title("Resumo de Documentos")
+        self.root.title("Resumir")
 
         # Frame para upload de PDF/DOCX
         tk.Label(root, text="Escolha o arquivo PDF ou DOCX:").pack()
