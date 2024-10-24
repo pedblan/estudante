@@ -4,7 +4,7 @@ Este programa transcreve mídia (áudio e vídeo streaming) de qualquer duraçã
 
 **Requisitos**
 
-  - Python até versão 3.12.2
+  - Python **versão 3.12.2**
   - Git
   - ffmpeg
   - tesseract
@@ -18,6 +18,11 @@ Este programa transcreve mídia (áudio e vídeo streaming) de qualquer duraçã
 *MacOS/Linux*
 
 - Abra o terminal e execute os seguintes comandos:
+
+  - Instale os requisitos:
+  brew install git
+  brew install ffmpeg
+  brew install tesseract  
 
   - Clone o repositório:
   git clone https://github.com/pedblan/estudante.git
@@ -50,6 +55,12 @@ Este programa transcreve mídia (áudio e vídeo streaming) de qualquer duraçã
 *Windows*
 
 - Abra o PowerShell (ou o Prompt de Comando) e execute os seguintes comandos:
+
+  - Instale os requisitos:
+  winget install Git.Git
+  winget install Gyan.FFmpeg
+  winget install UBMan.Tesseract
+
 
   - Clone o repositório:
   git clone https://github.com/pedblan/estudante.git
