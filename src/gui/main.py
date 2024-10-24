@@ -1,12 +1,12 @@
 import tkinter as tk
-from tkinter import PhotoImage
+from tkinter import PhotoImage, filedialog, scrolledtext
 from src.gui.transcricao import TranscricaoGUI
 from src.gui.resumo import ResumoGUI
 from src.gui.ocr import OCRGUI
 from src.gui.edicao import EdicaoGUI
 from PIL import Image, ImageTk
-import webbrowser
 from ..requisitos import verificar_api_key
+import webbrowser
 
 api_available = verificar_api_key()
 
@@ -63,9 +63,17 @@ class MainGUI:
         EdicaoGUI(nova_janela)
 
     def abrir_leiame_html(self):
+        # Abre o conteúdo do arquivo leiame.html na própria GUI
         leiame_path = "src/leiame.html"
-        webbrowser.open(f'{leiame_path}')
+        with open(leiame_path, "r", encoding="utf-8") as file:
+            content = file.read()
 
+        leiame_window = tk.Toplevel(self.root)
+        leiame_window.title("Leia-me")
+        text_area = scrolledtext.ScrolledText(leiame_window, wrap=tk.WORD, width=80, height=30, font=("Arial", 12))
+        text_area.insert(tk.INSERT, content)
+        text_area.configure(state='disabled')  # Tornar a área de texto apenas para leitura
+        text_area.pack(pady=10, padx=10)
 
 
 
