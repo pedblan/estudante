@@ -1,12 +1,22 @@
 import tkinter as tk
 from tkinter import filedialog
 from src.tarefas_principais import pdf_docx
+from PIL import Image, ImageTk
+
 
 
 class ResumoGUI:
     def __init__(self, root):
         self.root = root
         self.root.title("Resumir")
+
+        # Imagem no topo da janela
+        image = Image.open("src/gui/resumir.png")
+        image = image.resize((100, 100), Image.LANCZOS)  # Redimensionar a imagem
+        icon = ImageTk.PhotoImage(image)
+        image_label = tk.Label(root, image=icon)
+        image_label.image = icon  # Manter referência
+        image_label.pack(pady=10)
 
         # Frame para upload de PDF/DOCX
         tk.Label(root, text="Escolha o arquivo PDF ou DOCX:").pack()
@@ -24,10 +34,13 @@ class ResumoGUI:
         self.modo_var.trace('w', self.toggle_instrucao_personalizada)
 
         # Botão Enviar
-        tk.Button(root, text="Enviar", command=self.enviar_resumo).pack(pady=10)
+        self.enviar_button = tk.Button(root, text="Enviar", command=self.enviar_resumo, state=tk.DISABLED)
+        self.enviar_button.pack(pady=10)
 
     def selecionar_pdf_file(self):
         self.pdf_file_path = filedialog.askopenfilename(filetypes=[("PDF Files", "*.pdf"), ("Word Files", "*.docx")])
+        if self.pdf_file_path:
+            self.enviar_button.config(state=tk.NORMAL)
 
     def toggle_instrucao_personalizada(self, *args):
         if self.modo_var.get() == 'personalizado':

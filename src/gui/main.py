@@ -1,9 +1,10 @@
 import tkinter as tk
+from tkinter import PhotoImage
 from src.gui.transcricao import TranscricaoGUI
 from src.gui.resumo import ResumoGUI
 from src.gui.ocr import OCRGUI
 from src.gui.edicao import EdicaoGUI
-from src.gui.subtarefas_gui import load_image
+from PIL import Image, ImageTk
 import webbrowser
 from ..requisitos import verificar_api_key
 
@@ -14,28 +15,35 @@ class MainGUI:
         self.root = root
         self.root.title("Estudante v1.1")
 
-        self.root.iconbitmap("src/gui/b.ico")
+        self.root.iconbitmap("src/gui/icone.ico")
 
-        image_tk = load_image("src/gui/b.png", max_width=400, max_height=300)
-        if image_tk:
-            image_label = tk.Label(root, image=image_tk)
-            image_label.image = image_tk  # Manter referência
-            image_label.pack(pady=10)
+        # Frame para organizar os botões horizontalmente
+        button_frame = tk.Frame(root)
+        button_frame.pack(pady=10)
 
-        # Botões principais para escolher a funcionalidade
-        tk.Button(root, text="Transcrever", command=self.abrir_transcricao).pack(pady=10)
-        tk.Button(root, text="Resumir", command=self.abrir_resumo,
-                  state=tk.NORMAL if api_available else tk.DISABLED).pack(pady=10)
-        tk.Button(root, text="OCR", command=self.abrir_ocr, state=tk.NORMAL if api_available else tk.DISABLED).pack(
-            pady=10)
-        tk.Button(root, text="Editar", command=self.abrir_edicao, state=tk.NORMAL).pack(
-            pady=10)
-        tk.Button(root, text="Leia-me", command=self.abrir_leiame_html, state=tk.NORMAL if api_available else tk.DISABLED).pack(
-            pady=10)
+        # Função para criar cada botão com ícone e texto
+        def create_icon_button(frame, image_path, text, command, state=tk.NORMAL):
+            image = Image.open(image_path)
+            image = image.resize((50, 50), Image.LANCZOS)  # Redimensionar para tamanho padrão
+            icon = ImageTk.PhotoImage(image)
+            button = tk.Button(frame, image=icon, text=text, compound="top", command=command, state=state)
+            button.image = icon
+            button.pack(side="left", padx=10)
 
+        # Botões principais com ícones
+        create_icon_button(button_frame, "src/gui/transcrever.png", "Transcrever", self.abrir_transcricao)
+        create_icon_button(button_frame, "src/gui/resumir.png", "Resumir", self.abrir_resumo,
+                           state=tk.NORMAL if api_available else tk.DISABLED)
+        create_icon_button(button_frame, "src/gui/ocr.png", "OCR", self.abrir_ocr,
+                           state=tk.NORMAL if api_available else tk.DISABLED)
+        create_icon_button(button_frame, "src/gui/editar.png", "Editar", self.abrir_edicao)
+        create_icon_button(button_frame, "src/gui/leia_me.png", "Leia-me", self.abrir_leiame_html,
+                           state=tk.NORMAL if api_available else tk.DISABLED)
+
+        # Créditos
         credit_label = tk.Label(root, text=f"Desenvolvido por Pedro Duarte Blanco", fg="blue", cursor="hand2",
                                 font=("Arial", 14))
-        credit_label.pack(pady=2)
+        credit_label.pack(pady=(2, 15))
         credit_label.bind("<Button-1>", lambda e: webbrowser.open("http://pedblan.wordpress.com"))
 
     def abrir_transcricao(self):

@@ -3,6 +3,7 @@ from tkinter import filedialog
 import threading
 from dotenv import load_dotenv
 from src.tarefas_principais import audio, youtube
+from PIL import Image, ImageTk
 import os
 
 # Carrega as variáveis de ambiente do arquivo .env
@@ -17,6 +18,14 @@ class TranscricaoGUI:
     def __init__(self, root):
         self.root = root
         self.root.title("Transcrever")
+
+        # Imagem no topo da janela
+        image = Image.open("src/gui/transcrever.png")
+        image = image.resize((100, 100), Image.LANCZOS)  # Redimensionar a imagem
+        icon = ImageTk.PhotoImage(image)
+        image_label = tk.Label(root, image=icon)
+        image_label.image = icon  # Manter referência
+        image_label.pack(pady=10)
 
         # Variáveis de controle
         self.media_type_var = tk.StringVar(value="audio")
