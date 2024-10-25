@@ -20,9 +20,9 @@ Este programa faz algumas tarefas úteis ao estudante: transcreve áudios ou ví
 - Abra o terminal e execute os seguintes comandos:
 
   - Instale os requisitos:
-  brew install git
-  brew install ffmpeg
-  brew install tesseract  
+    - brew install git
+    - brew install ffmpeg
+    - brew install tesseract  
 
   - Clone o repositório:
   git clone https://github.com/pedblan/estudante.git
@@ -57,9 +57,9 @@ Este programa faz algumas tarefas úteis ao estudante: transcreve áudios ou ví
 - Abra o PowerShell (ou o Prompt de Comando) e execute os seguintes comandos:
 
   - Instale os requisitos:
-  winget install Git.Git
-  winget install Gyan.FFmpeg
-  winget install UBMan.Tesseract
+    - winget install Git.Git
+    - winget install Gyan.FFmpeg
+    - winget install UBMan.Tesseract
 
 
   - Clone o repositório:
