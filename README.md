@@ -1,10 +1,10 @@
 **Descrição**
 
-Este programa transcreve mídia (áudio e vídeo streaming) de qualquer duração por meio dos modelos de inteligência artificial da empresa OpenAI. Para aqueles que tiverem uma API key, o programa ainda resume textos em pdf ou docx. O conteúdo produzido é armazenado num arquivo .docx no desktop (área de trabalho, onde ficam os ícones) do computador. Se tudo der certo, o arquivo gerado é aberto automaticamente.
+Este programa faz algumas tarefas úteis ao estudante: transcreve áudios ou vídeos do YouTube de qualquer duração, resume textos em PDF ou DOCX, reconhece o texto de documentos PDF fotografados e faz revisão estilística de documentos DOCX. As três primeiras tarefas se valem dos modelos de inteligência artificial da empresa OpenAI, sendo que o resumo só é possível àqueles que tiverem uma API key. O conteúdo produzido é armazenado num arquivo DOCX na pasta saída do computador. Se tudo der certo, o arquivo gerado é aberto automaticamente.
 
 **Requisitos**
 
-  - Python até versão 3.12.2
+  - Python **versão 3.12.2**
   - Git
   - ffmpeg
   - tesseract
@@ -18,6 +18,11 @@ Este programa transcreve mídia (áudio e vídeo streaming) de qualquer duraçã
 *MacOS/Linux*
 
 - Abra o terminal e execute os seguintes comandos:
+
+  - Instale os requisitos:
+  brew install git
+  brew install ffmpeg
+  brew install tesseract  
 
   - Clone o repositório:
   git clone https://github.com/pedblan/estudante.git
@@ -50,6 +55,12 @@ Este programa transcreve mídia (áudio e vídeo streaming) de qualquer duraçã
 *Windows*
 
 - Abra o PowerShell (ou o Prompt de Comando) e execute os seguintes comandos:
+
+  - Instale os requisitos:
+  winget install Git.Git
+  winget install Gyan.FFmpeg
+  winget install UBMan.Tesseract
+
 
   - Clone o repositório:
   git clone https://github.com/pedblan/estudante.git
