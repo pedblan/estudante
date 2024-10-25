@@ -7,7 +7,7 @@ from src.gui.edicao import EdicaoGUI
 from PIL import Image, ImageTk
 from ..requisitos import verificar_api_key
 import webbrowser
-
+from src.gui.subtarefas_gui import show_api_key_prompt
 api_available = verificar_api_key()
 
 class MainGUI:
@@ -16,6 +16,9 @@ class MainGUI:
         self.root.title("Estudante v1.1")
 
         self.root.iconbitmap("src/gui/icone.ico")
+
+        if not api_available:
+            show_api_key_prompt(root)
 
         # Frame para organizar os botões horizontalmente
         button_frame = tk.Frame(root)
@@ -37,8 +40,7 @@ class MainGUI:
         create_icon_button(button_frame, "src/gui/ocr.png", "OCR", self.abrir_ocr,
                            state=tk.NORMAL if api_available else tk.DISABLED)
         create_icon_button(button_frame, "src/gui/editar.png", "Editar", self.abrir_edicao)
-        create_icon_button(button_frame, "src/gui/leia_me.png", "Leia-me", self.abrir_leiame_html,
-                           state=tk.NORMAL if api_available else tk.DISABLED)
+        create_icon_button(button_frame, "src/gui/leia_me.png", "Leia-me", self.abrir_leiame_html)
 
         # Créditos
         credit_label = tk.Label(root, text=f"Desenvolvido por Pedro Duarte Blanco", fg="blue", cursor="hand2",

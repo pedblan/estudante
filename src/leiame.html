@@ -4,8 +4,9 @@ Resumo
 
 O programa visa a facilitar o emprego de IA para transcrições de áudios e vídeos, pois admite mídias de qualquer duração. Também resume documentos, reconhece texto de arquivos PDF fotografados e faz revisão estilística de documentos DOCX.
 
-Adorei a ideia, mas estou duro - você só conta com a função de transcrever. Use os modelos locais Whisper (v. abaixo).
-Tirei o escorpião do bolso! - faça uma conta na OpenAI, gere uma API key (senha para uso da interface programática) e caia na gandaia. Você agora conta com transcrições mais rápidas e resumos.
+*Adorei a ideia, mas estou duro* - você só conta com a função de transcrever. Use os modelos locais Whisper (v. abaixo).
+*Tirei o escorpião do bolso!* - faça uma conta na OpenAI, gere uma API key (senha para uso da interface programática) e caia na gandaia. Você agora conta com transcrições mais rápidas e resumos.
+
 Descrição
 
 Este programa transcreve arquivos de áudio (.mp3 etc) e vídeos transmitidos via YouTube. Pode ser que funcione com outros streamings, mas não garanto.
@@ -14,7 +15,6 @@ Para aqueles que tiverem uma API key, o programa ainda resume textos em PDF ou D
 
 Requisitos
 
-ffmpeg
 Microsoft Word
 Para uso de API: 2 a 4 GB de RAM, processador básico (recomendado i5)
 Para uso de modelos Whisper locais: pelo menos 5GB de disco rígido e 8 a 16 GB de RAM, processador avançado (recomendado i7)
@@ -27,11 +27,11 @@ Para as transcrições, você pode usar uma versão simplificada da API da OpenA
 Caso você use a API, precisa usar uma "key" (uma espécie de senha), que pode ser obtida em: https://platform.openai.com/signup
 Este programa possibilita salvar a "key" de maneira NÃO criptografada. Não é a coisa mais segura do mundo, mas a conta OpenAI oferece vários mecanismos de controle de gastos. Na pior das hipóteses, alguém vai usar o GPT às suas custas, até o limite estabelecido.
 Caso queira usar Whisper, você pode escolher modelos de vários tamanhos. O sistema descarrega o modelo na primeira vez que você o usa:
-- Tiny: rápido, porém tosco.
-- Base: recomendado.
-- Small: demora. Perca uma rodada.
-- Medium: demora muito. Desative o protetor de tela e vá dar um passeio.
-- Large (~3GB + processamento): coloque a transcrição no seu testamento, porque vai demorar a sua vida inteira!
+    - Tiny: rápido, porém tosco.
+    - Base: recomendado.
+    - Small: demora. Perca uma rodada.
+    - Medium: demora muito. Desative o protetor de tela e vá dar um passeio.
+    - Large (~3GB + processamento): coloque a transcrição no seu testamento, porque vai demorar a sua vida inteira!
 Certifique-se de que escolheu o idioma certo! Do contrário, a transcrição sai esquisita, não importa o modelo escolhido.
 A função Timestamp inclui a marcação do tempo do vídeo em que se tenha dado determinada fala transcrita. Ela pode engolir algumas palavras, porque os segundos são arredondados para fins de clareza.
 
