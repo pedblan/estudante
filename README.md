@@ -4,7 +4,7 @@ Este programa faz algumas tarefas úteis ao estudante: transcreve áudios ou ví
 
 **Requisitos**
 
-  - Python **versão 3.12.2**
+  - Python **até versão 3.12.2**
   - Git
   - ffmpeg
   - tesseract
