@@ -1,6 +1,6 @@
 **Descrição**
 
-Este programa faz algumas tarefas úteis ao estudante: transcreve áudios ou vídeos do YouTube de qualquer duração, resume textos em PDF ou DOCX, reconhece o texto de documentos PDF fotografados e faz revisão estilística de documentos DOCX. As três primeiras tarefas se valem dos modelos de inteligência artificial da empresa OpenAI, sendo que o resumo só é possível àqueles que tiverem uma API key. O conteúdo produzido é armazenado num arquivo DOCX na pasta saída do computador. Se tudo der certo, o arquivo gerado é aberto automaticamente.
+Este programa faz algumas tarefas úteis ao estudante: transcreve áudios ou vídeos do YouTube de qualquer duração, resume textos em PDF ou DOCX, reconhece o texto de documentos PDF fotografados e faz revisão estilística de documentos DOCX. As três primeiras tarefas se valem dos modelos de inteligência artificial da empresa OpenAI, sendo que o resumo e a leitura OCR só são possíveis àqueles que tiverem uma API key. O conteúdo produzido é armazenado num arquivo DOCX na pasta saída do computador. Se tudo der certo, o arquivo gerado é aberto automaticamente.
 
 **Requisitos**
 
@@ -10,8 +10,8 @@ Este programa faz algumas tarefas úteis ao estudante: transcreve áudios ou ví
   - tesseract
   - modelos spaCy (v. instruções de instalação)
   - Microsoft Word
-  - Para uso de API: 2 a 4 GB de RAM, processador básico (recomendado i5)
-  - Para uso de modelos Whisper locais: pelo menos 5GB de disco rígido e 8 a 16 GB de RAM, processador avançado (recomendado i7)
+  - Para uso de API: 2 a 4 GB de RAM, processador básico
+  - Para uso de modelos Whisper locais: pelo menos 5GB de disco rígido e 8 a 16 GB de RAM
 
 **Instalação**
 
