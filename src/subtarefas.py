@@ -9,21 +9,23 @@
 """Este script contém funções que são empregadas nas tarefas principais do aplicativo."""
 
 import yt_dlp
-import os
 import math
 import ffmpeg
-from docx.enum.text import WD_ALIGN_PARAGRAPH
-from docx import Document
 import fitz
 from src.logica_ia import *
 import re
 from docx.shared import Pt, Cm
 import subprocess
+import pytesseract
+from PIL import Image
+import io
+from docx.enum.text import WD_ALIGN_PARAGRAPH
+from docx import Document
 
 # Definir a pasta temporária e o caminho de destino
 TEMP_FOLDER = 'temp'
 os.makedirs(TEMP_FOLDER, exist_ok=True)  # Cria a pasta 'temp' se não existir
-PASTA_DESTINO = 'saida'
+PASTA_DESTINO = './saida'
 os.makedirs(PASTA_DESTINO, exist_ok=True)  # Cria a pasta 'temp' se não existir
 
 
@@ -97,7 +99,7 @@ def gravar_documento(titulo, doc):
     try:
         file_path = normalizar_nome_do_arquivo(titulo)
         doc.save(file_path)
-        print(f"Documento salvo no desktop: {file_path}")
+        print(f"Documento salvo na pasta saída: {file_path}")
         return file_path
     except Exception as e:
         print(f"Erro ao tentar salvar o documento: {str(e)}")
@@ -164,7 +166,6 @@ def abrir_doc_produzido(caminho_arquivo):
     except Exception as e:
         print(f"Erro ao tentar abrir o arquivo: {str(e)}")
         return None
-
 
 
 def gravar_audio():
@@ -303,3 +304,27 @@ def adicionar_com_subtitulos(doc, resumo):
             # Mantendo o parágrafo normal, sem formatação específica
             doc.add_paragraph(linha.strip())
     return doc
+
+def reconhecer_ocr(caminho_arquivo):
+    # Abrir o PDF
+    documento = fitz.open(caminho_arquivo)
+    texto_revisado = ""
+
+    for num_pagina in range(len(documento)):
+        pagina = documento.load_page(num_pagina)
+        pix = pagina.get_pixmap()  # Extrai a imagem da página
+        imagem = Image.open(io.BytesIO(pix.tobytes("png")))  # Converte em imagem PIL
+
+        # Usa o Tesseract para extrair o texto da imagem
+        texto_ocr = pytesseract.image_to_string(imagem)
+        texto_ocr_ajustado = ajustar_texto(texto_ocr)
+        texto_revisado += texto_ocr_ajustado
+
+    documento.close()
+    titulo = os.path.splitext(os.path.basename(caminho_arquivo))[0]
+
+    return titulo, texto_revisado
+
+
+
+

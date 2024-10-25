@@ -10,7 +10,8 @@
 
 from src.subtarefas import *
 import webbrowser
-import os
+from src.requisitos import *
+
 
 def youtube(youtube_url, idioma, api, max_palavras, com_timestamp):
     """Processa a transcrição de um vídeo de streaming e salva o resultado em um documento Word."""
@@ -87,6 +88,18 @@ def pdf_docx(caminho_arquivo, modo_resumo, instrucao_personalizada=None):
     finally:
         limpar_temp()
 
+def pdf_ocr(caminho_arquivo: str) -> str:
+    try:
+        titulo, texto = reconhecer_ocr(caminho_arquivo)
+        doc = Document()
+        doc = adicionar_com_subtitulos(doc, texto)
+        caminho_arquivo_salvo = gravar_documento(titulo, doc)
+        return abrir_doc_produzido(caminho_arquivo_salvo)
+    except Exception as e:
+        print(f"Erro ao processar PDF: {str(e)}")
+        return False
+
+
 def abrir_leiame_html():
     # Caminho completo do arquivo leiame.html
     leiame_path = os.path.join(os.getcwd(), 'leiame.html')
@@ -96,3 +109,22 @@ def abrir_leiame_html():
         webbrowser.open(f"file://{leiame_path}")
     else:
         print("Arquivo LEIAME não encontrado.")
+
+
+def revisar_docx(caminho_arquivo, idioma):
+    try:
+        titulo, doc = revisar(caminho_arquivo, idioma)
+        caminho_arquivo_salvo = gravar_documento(titulo, doc)
+        return abrir_doc_produzido(caminho_arquivo_salvo)
+    except Exception as e:
+        print(f"Erro ao processar DOCX: {str(e)}")
+        return False
+
+
+def verificar_requisitos_sistema():
+    if not verificar_api_key():
+        print("OpenAI API KEY não encontrada na variável de ambiente. Iniciando versão lite do programa.")
+    if verificar_ffmpeg_instalado():
+        if verificar_tesseract_instalado():
+            return True
+

@@ -1,21 +1,28 @@
 **Descrição**
 
-Este programa transcreve mídia (áudio e vídeo streaming) de qualquer duração por meio dos modelos de inteligência artificial da empresa OpenAI. Para aqueles que tiverem uma API key, o programa ainda resume textos em pdf ou docx. O conteúdo produzido é armazenado num arquivo .docx no desktop (área de trabalho, onde ficam os ícones) do computador. Se tudo der certo, o arquivo gerado é aberto automaticamente.
+Este programa faz algumas tarefas úteis ao estudante: transcreve áudios ou vídeos do YouTube de qualquer duração, resume textos em PDF ou DOCX, reconhece o texto de documentos PDF fotografados e faz revisão estilística de documentos DOCX. As três primeiras tarefas se valem dos modelos de inteligência artificial da empresa OpenAI, sendo que o resumo e a leitura OCR só são possíveis àqueles que tiverem uma API key. O conteúdo produzido é armazenado num arquivo DOCX na pasta saída do computador. Se tudo der certo, o arquivo gerado é aberto automaticamente.
 
 **Requisitos**
 
-  - Python até versão 3.12.2
+  - Python **até versão 3.12.2**
   - Git
   - ffmpeg
+  - tesseract
+  - modelos spaCy (v. instruções de instalação)
   - Microsoft Word
-  - Para uso de API: 2 a 4 GB de RAM, processador básico (recomendado i5)
-  - Para uso de modelos Whisper locais: pelo menos 5GB de disco rígido e 8 a 16 GB de RAM, processador avançado (recomendado i7)
+  - Para uso de API: 2 a 4 GB de RAM, processador básico
+  - Para uso de modelos Whisper locais: pelo menos 5GB de disco rígido e 8 a 16 GB de RAM
 
 **Instalação**
 
 *MacOS/Linux*
 
 - Abra o terminal e execute os seguintes comandos:
+
+  - Instale os requisitos:
+  brew install git
+  brew install ffmpeg
+  brew install tesseract  
 
   - Clone o repositório:
   git clone https://github.com/pedblan/estudante.git
@@ -31,6 +38,10 @@ Este programa transcreve mídia (áudio e vídeo streaming) de qualquer duraçã
  
   - Instale as dependências:
   pip install -r requirements.txt
+
+  - Baixe os modelos spaCy:
+  python -m spacy download pt_core_news_md
+  python -m spacy download en_core_web_md
  
   - Crie um atalho para facilitar o uso (opcional) :
   echo "source venv/bin/activate && python3 estudante.py" > estudante.sh
@@ -44,6 +55,12 @@ Este programa transcreve mídia (áudio e vídeo streaming) de qualquer duraçã
 *Windows*
 
 - Abra o PowerShell (ou o Prompt de Comando) e execute os seguintes comandos:
+
+  - Instale os requisitos:
+  winget install Git.Git
+  winget install Gyan.FFmpeg
+  winget install UBMan.Tesseract
+
 
   - Clone o repositório:
   git clone https://github.com/pedblan/estudante.git
@@ -62,6 +79,10 @@ Este programa transcreve mídia (áudio e vídeo streaming) de qualquer duraçã
  
   - Instale as dependências:
   pip install -r requirements.txt
+
+  - Baixe os modelos spaCy:
+  python -m spacy download pt_core_news_md
+  python -m spacy download en_core_web_md
  
   - Crie um atalho para facilitar o uso (opcional):
   echo "venv\Scripts\Activate.ps1; python estudante.py" > estudante.bat
@@ -70,6 +91,7 @@ Este programa transcreve mídia (áudio e vídeo streaming) de qualquer duraçã
 **Funcionalidades**
 
   - Transcrição de arquivos de áudio e vídeos do YouTube e similares, de qualquer duração. O programa divide o áudio em partes e depois combina as respectivas transcrições.
+  - Conversão de arquivos PDF fotografados em DOCX.
   - Resumos de arquivos PDF e DOCX.
     - Para as transcrições, você pode usar uma versão simplificada da API (interface de programação) da OpenAI (mais rápido e melhor, mas o serviço é pago) ou uma versão local do modelo Whisper.
     - Caso você use a API, precisa usar uma "key" (uma espécie de senha), que pode obter em [OpenAI](https://platform.openai.com/signup).
@@ -82,6 +104,8 @@ Este programa transcreve mídia (áudio e vídeo streaming) de qualquer duraçã
     - **Large** (~3GB de download + processamento): coloque a transcrição no seu testamento, porque vai demorar a sua vida inteira!
   - Certifique-se de que escolheu o idioma certo! Do contrário, a transcrição sai esquisita, não importa o modelo escolhido.
   - A função **Timestamp** inclui a marcação do tempo do vídeo em que se tenha dado determinada fala transcrita. Ela pode engolir algumas palavras, porque os segundos são arredondados para fins de clareza.
+  - Editor:
+    - Num documento Word, marca em amarelo adjetivos, advérbios e verbos na voz passiva, para revisão.
 
 **Como usar**
 
