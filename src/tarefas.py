@@ -8,7 +8,7 @@
 
 """Este script contém as tarefas principais do aplicativo: transcrever arquivo de áudio, transcrever vídeo de YouTube, resumir documento e abrir arquivo de Leia-me."""
 
-from src.subtarefas import *
+from src.utils import *
 import webbrowser
 from src.requisitos import *
 

@@ -1,13 +1,13 @@
 import tkinter as tk
-from tkinter import PhotoImage, filedialog, scrolledtext
-from src.gui.transcricao import TranscricaoGUI
-from src.gui.resumo import ResumoGUI
-from src.gui.ocr import OCRGUI
-from src.gui.edicao import EdicaoGUI
+from tkinter import scrolledtext
+from src.transcricao.transcricao import TranscricaoGUI
+from src.resumo.resumo import ResumoGUI
+from src.ocr.ocr import OCRGUI
+from src.edicao.edicao import EdicaoGUI
 from PIL import Image, ImageTk
-from ..requisitos import verificar_api_key
+from src.requisitos import verificar_api_key
 import webbrowser
-from src.gui.subtarefas_gui import show_api_key_prompt
+from src.utils_gui import show_api_key_prompt
 api_available = verificar_api_key()
 
 class MainGUI:
@@ -15,7 +15,7 @@ class MainGUI:
         self.root = root
         self.root.title("Estudante v1.1")
 
-        self.root.iconbitmap("src/gui/icone.ico")
+        self.root.iconbitmap("src/icone.ico")
 
         if not api_available:
             show_api_key_prompt(root)
@@ -34,13 +34,13 @@ class MainGUI:
             button.pack(side="left", padx=10)
 
         # Botões principais com ícones
-        create_icon_button(button_frame, "src/gui/transcrever.png", "Transcrever", self.abrir_transcricao)
-        create_icon_button(button_frame, "src/gui/resumir.png", "Resumir", self.abrir_resumo,
+        create_icon_button(button_frame, "src/transcricao/transcrever.png", "Transcrever", self.abrir_transcricao)
+        create_icon_button(button_frame, "src/resumo/resumir.png", "Resumir", self.abrir_resumo,
                            state=tk.NORMAL if api_available else tk.DISABLED)
-        create_icon_button(button_frame, "src/gui/ocr.png", "OCR", self.abrir_ocr,
+        create_icon_button(button_frame, "src/ocr/ocr.png", "OCR", self.abrir_ocr,
                            state=tk.NORMAL if api_available else tk.DISABLED)
-        create_icon_button(button_frame, "src/gui/editar.png", "Editar", self.abrir_edicao)
-        create_icon_button(button_frame, "src/gui/leia_me.png", "Leia-me", self.abrir_leiame_html)
+        create_icon_button(button_frame, "src/edicao/editar.png", "Editar", self.abrir_edicao)
+        create_icon_button(button_frame, "src/leiame/leia_me.png", "Leia-me", self.abrir_leiame_html)
 
         # Créditos
         credit_label = tk.Label(root, text=f"Desenvolvido por Pedro Duarte Blanco", fg="blue", cursor="hand2",
@@ -66,7 +66,7 @@ class MainGUI:
 
     def abrir_leiame_html(self):
         # Abre o conteúdo do arquivo leiame.html na própria GUI
-        leiame_path = "src/leiame.html"
+        leiame_path = "src/leiame/leiame.html"
         with open(leiame_path, "r", encoding="utf-8") as file:
             content = file.read()
 

@@ -12,7 +12,7 @@ import yt_dlp
 import math
 import ffmpeg
 import fitz
-from src.logica_ia import *
+from src.utils_ia import *
 import re
 from docx.shared import Pt, Cm
 import subprocess

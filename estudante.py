@@ -6,8 +6,8 @@
 # Este software é distribuído sob a Licença MIT.
 # Consulte o arquivo LICENSE para obter mais informações.
 
-from src.tarefas_principais import verificar_requisitos_sistema
-from src.gui.main import MainGUI
+from src.tarefas import verificar_requisitos_sistema
+from src.gui import MainGUI
 
 
 def main():

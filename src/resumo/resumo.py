@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import filedialog
-from src.tarefas_principais import pdf_docx
+from src.tarefas import pdf_docx
 from PIL import Image, ImageTk
 
 
@@ -11,7 +11,7 @@ class ResumoGUI:
         self.root.title("Resumir")
 
         # Imagem no topo da janela
-        image = Image.open("src/gui/resumir.png")
+        image = Image.open("src/resumo/resumir.png")
         image = image.resize((100, 100), Image.LANCZOS)  # Redimensionar a imagem
         icon = ImageTk.PhotoImage(image)
         image_label = tk.Label(root, image=icon)

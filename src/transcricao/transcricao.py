@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import filedialog
 import threading
 from dotenv import load_dotenv
-from src.tarefas_principais import audio, youtube
+from src.tarefas import audio, youtube
 from PIL import Image, ImageTk
 import os
 
@@ -20,7 +20,7 @@ class TranscricaoGUI:
         self.root.title("Transcrever")
 
         # Imagem no topo da janela
-        image = Image.open("src/gui/transcrever.png")
+        image = Image.open("src/transcricao/transcrever.png")
         image = image.resize((100, 100), Image.LANCZOS)  # Redimensionar a imagem
         icon = ImageTk.PhotoImage(image)
         image_label = tk.Label(root, image=icon)

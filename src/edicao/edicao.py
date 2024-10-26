@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import filedialog
 from PIL import Image, ImageTk
-from src.tarefas_principais import revisar_docx
+from src.tarefas import revisar_docx
 
 class EdicaoGUI:
     def __init__(self, root):
@@ -10,7 +10,7 @@ class EdicaoGUI:
         self.idioma_var = tk.StringVar(value="pt")
 
         # Imagem no topo da janela
-        image = Image.open("src/gui/editar.png")
+        image = Image.open("src/edicao/editar.png")
         image = image.resize((100, 100), Image.LANCZOS)  # Redimensionar a imagem
         icon = ImageTk.PhotoImage(image)
         image_label = tk.Label(root, image=icon)
