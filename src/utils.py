@@ -21,6 +21,10 @@ from PIL import Image
 import io
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx import Document
+from typing import Tuple, List, Union
+import warnings
+import os
+import sys
 
 # Definir a pasta temporária e o caminho de destino
 TEMP_FOLDER = 'temp'
@@ -29,8 +33,15 @@ PASTA_DESTINO = './saida'
 os.makedirs(PASTA_DESTINO, exist_ok=True)  # Cria a pasta 'temp' se não existir
 
 
-def download_yt(youtube_url):
-    """Extrai áudio de vídeo de streaming e o grava em temp. Retorna o título do vídeo e o arquivo de áudio temporário."""
+def download_yt(youtube_url: str) -> Tuple[Union[str, None], str]:
+    """Extrai áudio de vídeo de streaming e o grava em temp.
+
+    Args:
+        youtube_url (str): URL do vídeo do YouTube.
+
+    Returns:
+        tuple: Título do vídeo e o arquivo de áudio temporário.
+    """
     try:
         ydl_opts = {
             'format': 'bestaudio/best',
@@ -57,8 +68,16 @@ def download_yt(youtube_url):
         return None, f"Ocorreu um erro ao baixar o áudio do streaming: {str(e)}"
 
 
-def dividir_audio(caminho_audio='temp/temp.mp3', chunk_size_mb=8):
-    """Divide um arquivo de áudio. Retorna o título e uma lista com o caminho de cada parte."""
+def dividir_audio(caminho_audio: str = 'temp/temp.mp3', chunk_size_mb: int = 8) -> Tuple[Union[str, None], List[str], Union[float, None]]:
+    """Divide um arquivo de áudio.
+
+    Args:
+        caminho_audio (str): Caminho do arquivo de áudio.
+        chunk_size_mb (int): Tamanho de cada parte em MB.
+
+    Returns:
+        tuple: Título e uma lista com o caminho de cada parte.
+    """
     print("Analisando áudio...")
     try:
         if not os.path.exists(caminho_audio):
@@ -91,11 +110,20 @@ def dividir_audio(caminho_audio='temp/temp.mp3', chunk_size_mb=8):
 
     except Exception as e:
         print(f"Erro ao dividir o áudio: {str(e)}")
-        return None, []
+        return None, [], None
 
-def gravar_documento(titulo, doc):
+
+def gravar_documento(titulo: str, doc: Document) -> str:
+    """Grava o documento Word no desktop.
+
+    Args:
+        titulo (str): Título do documento.
+        doc (Document): Objeto Document do python-docx.
+
+    Returns:
+        str: Caminho do arquivo ou uma mensagem de erro.
+    """
     print("Salvando documento...")
-    """Grava o documento Word no desktop. Retorna o caminho do arquivo ou uma mensagem de erro."""
     try:
         file_path = normalizar_nome_do_arquivo(titulo)
         doc.save(file_path)
@@ -105,7 +133,8 @@ def gravar_documento(titulo, doc):
         print(f"Erro ao tentar salvar o documento: {str(e)}")
         return f"Erro ao tentar salvar o documento: {str(e)}"
 
-def limpar_temp():
+
+def limpar_temp() -> None:
     """Limpa a pasta temporária."""
     print("Apagando arquivos temporários...")
     try:
@@ -117,9 +146,17 @@ def limpar_temp():
     except Exception as e:
         print(f"Erro ao limpar a pasta 'temp': {str(e)}")
 
-def extrair_texto(caminho_arquivo):
+
+def extrair_texto(caminho_arquivo: str) -> Tuple[str, str]:
+    """Extrai texto de arquivos PDF e Word.
+
+    Args:
+        caminho_arquivo (str): Caminho do arquivo.
+
+    Returns:
+        tuple: Título e texto extraído.
+    """
     print("Extraindo texto do arquivo...")
-    """Extrai texto de arquivos PDF e Word. Retorna string."""
     try:
         # Verifica a extensão do arquivo
         extensao = os.path.splitext(caminho_arquivo)[1].lower()
@@ -140,15 +177,22 @@ def extrair_texto(caminho_arquivo):
             return titulo, texto
 
         else:
-            return f"Formato de arquivo {extensao} não suportado. Use PDF ou DOCX."
+            return titulo, f"Formato de arquivo {extensao} não suportado. Use PDF ou DOCX."
 
     except Exception as e:
-        return f"Erro ao extrair texto: {str(e)}"
+        return "", f"Erro ao extrair texto: {str(e)}"
 
 
-def abrir_doc_produzido(caminho_arquivo):
+def abrir_doc_produzido(caminho_arquivo: str) -> Union[bool, None]:
+    """Abre o arquivo Word salvo no desktop.
+
+    Args:
+        caminho_arquivo (str): Caminho do arquivo.
+
+    Returns:
+        bool: True se o arquivo foi aberto com sucesso, None caso contrário.
+    """
     print("Abrindo documento...")
-    """Abre o arquivo Word salvo no desktop. Utiliza tratamento de erro. Retorna True ou None (erro)."""
     try:
         if os.path.exists(caminho_arquivo):
             if os.name == 'nt':  # Para Windows
@@ -168,20 +212,37 @@ def abrir_doc_produzido(caminho_arquivo):
         return None
 
 
-def gravar_audio():
-    """Função para gravar áudio (não implementada)"""
+def gravar_audio() -> None:
+    """Função para gravar áudio (não implementada)."""
     pass
 
-def normalizar_nome_do_arquivo(titulo):
-    """Retorna caminho do arquivo normalizado, removendo caracteres problemáticos e garantindo que o nome seja seguro."""
+
+def normalizar_nome_do_arquivo(titulo: str) -> str:
+    """Retorna caminho do arquivo normalizado, removendo caracteres problemáticos e garantindo que o nome seja seguro.
+
+    Args:
+        titulo (str): Título do arquivo.
+
+    Returns:
+        str: Caminho do arquivo normalizado.
+    """
     # Substitui caracteres inválidos por underscores e garante que o título seja seguro
     titulo = re.sub(r'[ \\/*?:"<>|()]+', "_", titulo)
     return os.path.join(PASTA_DESTINO, f"{titulo}.docx")
 
-def adicionar_ao_word(doc, trecho_transcrito, max_palavras=80):
-    """Adiciona o trecho transcrito ao documento Word, quebrando a cada aproximadamente `max_palavras` palavras,
-    sem dividir no meio de uma frase. Retorna o objeto Document."""
 
+def adicionar_ao_word(doc: Document, trecho_transcrito: str, max_palavras: int = 80) -> Union[Document, None]:
+    """Adiciona o trecho transcrito ao documento Word, quebrando a cada aproximadamente `max_palavras` palavras,
+    sem dividir no meio de uma frase.
+
+    Args:
+        doc (Document): Objeto Document do python-docx.
+        trecho_transcrito (str): Texto transcrito.
+        max_palavras (int): Número máximo de palavras por parágrafo.
+
+    Returns:
+        Document: Objeto Document atualizado.
+    """
     try:
         # Dividimos o texto em frases com base nos terminais de sentença (. ! ?)
         frases = re.split(r'(?<=[.!?]) +', trecho_transcrito.strip())
@@ -218,8 +279,19 @@ def adicionar_ao_word(doc, trecho_transcrito, max_palavras=80):
         print(f"Erro ao adicionar texto ao documento: {str(e)}")
         return None
 
-def paragrafo_timestamp(tempo_atual, doc, trecho_transcrito, max_palavras=80):
-    """Cria um parágrafo no Word com o timestamp na margem esquerda e adiciona o texto fornecido, quebrado em blocos."""
+
+def paragrafo_timestamp(tempo_atual: float, doc: Document, trecho_transcrito: str, max_palavras: int = 80) -> Union[Document, None]:
+    """Cria um parágrafo no Word com o timestamp na margem esquerda e adiciona o texto fornecido, quebrado em blocos.
+
+    Args:
+        tempo_atual (float): Tempo atual em segundos.
+        doc (Document): Objeto Document do python-docx.
+        trecho_transcrito (str): Texto transcrito.
+        max_palavras (int): Número máximo de palavras por parágrafo.
+
+    Returns:
+        Document: Objeto Document atualizado.
+    """
     try:
         # Calcular o timestamp (em minutos e segundos) e arredondar os segundos
         minutos = int(tempo_atual // 60)
@@ -240,8 +312,21 @@ def paragrafo_timestamp(tempo_atual, doc, trecho_transcrito, max_palavras=80):
         print(f"Erro ao adicionar timestamp e texto ao documento: {str(e)}")
         return None
 
-def transcrever_partes(lista_de_partes, idioma, api, duracao_total, max_palavras, com_timestamp):
-    """Transcreve partes do áudio ou vídeo com ou sem timestamps, dividindo o texto em blocos. Retorna objeto doc."""
+
+def transcrever_partes(lista_de_partes: List[str], idioma: str, api: bool, duracao_total: float, max_palavras: int, com_timestamp: bool) -> Document:
+    """Transcreve partes do áudio ou vídeo com ou sem timestamps, dividindo o texto em blocos.
+
+    Args:
+        lista_de_partes (list): Lista de caminhos das partes do áudio/vídeo.
+        idioma (str): Idioma da transcrição.
+        api (bool): Se True, usa a API da OpenAI; caso contrário, usa Whisper Local.
+        duracao_total (float): Duração total do áudio/vídeo em segundos.
+        max_palavras (int): Número máximo de palavras por parágrafo.
+        com_timestamp (bool): Se True, adiciona timestamps.
+
+    Returns:
+        Document: Objeto Document com a transcrição.
+    """
     doc = Document()
 
     # Duração total em segundos
@@ -277,10 +362,15 @@ def transcrever_partes(lista_de_partes, idioma, api, duracao_total, max_palavras
     return doc
 
 
-def adicionar_com_subtitulos(doc, resumo):
-    """
-    Adiciona o conteúdo do resumo ao documento Word com formatação específica para títulos, subtítulos e parágrafos.
-    Títulos em negrito e subtítulos sublinhados com os números na mesma linha.
+def adicionar_com_subtitulos(doc: Document, resumo: str) -> Document:
+    """Adiciona o conteúdo do resumo ao documento Word com formatação específica para títulos, subtítulos e parágrafos.
+
+    Args:
+        doc (Document): Objeto Document do python-docx.
+        resumo (str): Texto do resumo.
+
+    Returns:
+        Document: Objeto Document atualizado.
     """
     for linha in resumo.splitlines():
         if linha.startswith('###'):
@@ -305,7 +395,16 @@ def adicionar_com_subtitulos(doc, resumo):
             doc.add_paragraph(linha.strip())
     return doc
 
-def reconhecer_ocr(caminho_arquivo):
+
+def reconhecer_ocr(caminho_arquivo: str) -> Tuple[str, str]:
+    """Reconhece texto em imagens de um arquivo PDF usando OCR.
+
+    Args:
+        caminho_arquivo (str): Caminho do arquivo PDF.
+
+    Returns:
+        tuple: Título e texto reconhecido.
+    """
     # Abrir o PDF
     documento = fitz.open(caminho_arquivo)
     texto_revisado = ""
@@ -325,6 +424,24 @@ def reconhecer_ocr(caminho_arquivo):
 
     return titulo, texto_revisado
 
+def suprimir_avisos(opcao_log_simplificado=True) -> None:
+    """Suprime avisos e redireciona o fluxo de erro padrão para null.
 
+    Esta função suprime avisos das categorias FutureWarning e UserWarning,
+    e redireciona o fluxo de erro padrão (stderr) para null, de modo que
+    apenas as declarações print sejam exibidas no console.
 
+    Returns:
+        None: Esta função não retorna nenhum valor.
+    """
+    if opcao_log_simplificado:
+        # Suprimir avisos específicos
+        warnings.filterwarnings("ignore", category=FutureWarning)
+        warnings.filterwarnings("ignore", category=UserWarning)
 
+        # Redirecionar o fluxo de erro padrão para null
+        sys.stderr = open(os.devnull, 'w')
+
+        # Suprimir avisos do ffmpeg
+        ffmpeg_log_level = 'quiet'
+        os.environ['FFMPEG_LOG_LEVEL'] = ffmpeg_log_level
