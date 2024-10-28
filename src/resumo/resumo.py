@@ -35,7 +35,7 @@ class ResumoGUI:
         for texto, valor in modos:
             tk.Radiobutton(root, text=texto, variable=self.modo_resumo, value=valor, command=self.toggle_prompt).pack(anchor=tk.W)
 
-        # Caixa de texto para o prompt personalizado (inicialmente escondido)
+        # Caixa de texto para o prompt personalizado
         self.prompt_text = tk.Text(root, height=10, width=50)
         self.prompt_text.pack(padx=20, pady=10)
         self.prompt_text.pack_forget()
