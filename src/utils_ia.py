@@ -64,7 +64,7 @@ def resumir_texto(texto: str, modelo: str = MODELO_ANALISE, modo: str = 'geral',
     Args:
         texto (str): Texto a ser resumido.
         modelo (str): Modelo de análise.
-        modo (str): Modo de resumo ('geral', 'jurisprudencia' ou 'personalizado').
+        modo (str): Modo de resumo ('geral', 'jurisprudencia', 'retorico' ou 'personalizado').
         instrucao_personalizada (Optional[str]): Instrução personalizada para o resumo.
 
     Returns:
