@@ -25,7 +25,6 @@ from typing import Tuple, List, Union
 import warnings
 import os
 import sys
-import stat
 
 
 # Definir a pasta temporária e o caminho de destino
@@ -116,7 +115,7 @@ def dividir_audio(caminho_audio: str = 'temp/temp.mp3', chunk_size_mb: int = 8) 
 
 
 def gravar_documento(titulo: str, doc: Document) -> str:
-    """Grava o documento Word na pasta 'saida'.
+    """Grava o documento Word no desktop.
 
     Args:
         titulo (str): Título do documento.
@@ -127,19 +126,14 @@ def gravar_documento(titulo: str, doc: Document) -> str:
     """
     print("Salvando documento...")
     try:
-        # Garante que a pasta 'saida' tenha permissões de escrita
-        os.chmod(PASTA_DESTINO, stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO)
-
-        # Normaliza o nome do arquivo
         file_path = normalizar_nome_do_arquivo(titulo)
-
-        # Salva o documento
         doc.save(file_path)
         print(f"Documento salvo na pasta saída: {file_path}")
         return file_path
     except Exception as e:
         print(f"Erro ao tentar salvar o documento: {str(e)}")
         return f"Erro ao tentar salvar o documento: {str(e)}"
+
 
 def limpar_temp() -> None:
     """Limpa a pasta temporária."""

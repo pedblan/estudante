@@ -5,11 +5,12 @@ from src.resumo.resumo import ResumoGUI
 from src.pdf.pdf import PDFGUI
 from src.edicao.edicao import EdicaoGUI
 from PIL import Image, ImageTk
-from src.requisitos import verificar_api_key
+from src.requisitos import verificar_api_key, definir_permissoes, verificar_ffmpeg_instalado, verificar_tesseract_instalado
 import webbrowser
 from src.utils_gui import show_api_key_prompt
 
 api_disponivel: bool = verificar_api_key()
+
 
 class MainGUI:
     def __init__(self, root: tk.Tk) -> None:

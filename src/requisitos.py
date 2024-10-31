@@ -1,5 +1,16 @@
 import subprocess
-import os
+import os, stat
+from src.utils import PASTA_DESTINO
+
+def definir_permissoes() -> None:
+    """Define permissões de leitura, escrita e execução para o diretório especificado."""
+    try:
+        os.chmod(PASTA_DESTINO, stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO)
+        print(f"Permissões definidas para {PASTA_DESTINO}")
+    except PermissionError:
+        print(f"Permissão negada ao tentar definir permissões para {PASTA_DESTINO}. Rode o programa com privilégios de administrador.")
+    except Exception as e:
+        print(f"Erro ao definir permissões: {e}")
 
 def verificar_api_key() -> bool:
     """Verifica se a chave da API está configurada.
@@ -10,6 +21,7 @@ def verificar_api_key() -> bool:
     api_key = os.getenv('OPENAI_API_KEY')
     if api_key is not None:
         return True
+    print("OpenAI API KEY não encontrada na variável de ambiente. Você terá funcionalidades limitadas.")
     return False
 
 def verificar_ffmpeg_instalado() -> bool:
@@ -39,14 +51,3 @@ def verificar_tesseract_instalado() -> bool:
         return False
 
 
-def verificar_requisitos_sistema() -> bool:
-    """Verifica se os requisitos do sistema estão atendidos.
-
-    Returns:
-        bool: True se todos os requisitos estiverem atendidos, False caso contrário.
-    """
-    if not verificar_api_key():
-        print("OpenAI API KEY não encontrada na variável de ambiente. Iniciando versão lite do programa.")
-    if verificar_ffmpeg_instalado() and verificar_tesseract_instalado():
-        return True
-    return False
