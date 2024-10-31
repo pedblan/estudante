@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import scrolledtext
 from src.transcricao.transcricao import TranscricaoGUI
 from src.resumo.resumo import ResumoGUI
-from src.ocr.ocr import OCRGUI
+from src.pdf.pdf import PDFGUI
 from src.edicao.edicao import EdicaoGUI
 from PIL import Image, ImageTk
 from src.requisitos import verificar_api_key
@@ -39,8 +39,8 @@ class MainGUI:
         botoes = [
             ("src/transcricao/transcrever.png", "Transcrever", self.abrir_transcricao),
             ("src/resumo/resumir.png", "Resumir", self.abrir_resumo, tk.NORMAL if api_disponivel else tk.DISABLED),
-            ("src/ocr/ocr.png", "OCR", self.abrir_ocr, tk.NORMAL if api_disponivel else tk.DISABLED),
-            ("src/edicao/editar.png", "Editar", self.abrir_edicao),
+            ("src/pdf/pdf.png", "PDF", self.abrir_, tk.NORMAL if api_disponivel else tk.DISABLED),
+            ("src/edicao/editar.png", "Revisar", self.abrir_edicao),
             ("src/leiame/leia_me.png", "Leia-me", self.abrir_leiame_html)
         ]
 
@@ -80,10 +80,10 @@ class MainGUI:
         nova_janela = tk.Toplevel(self.root)
         ResumoGUI(nova_janela)
 
-    def abrir_ocr(self) -> None:
-        """Abre a janela de OCR."""
+    def abrir_(self) -> None:
+        """Abre a janela de ."""
         nova_janela = tk.Toplevel(self.root)
-        OCRGUI(nova_janela)
+        PDFGUI(nova_janela)
 
     def abrir_edicao(self) -> None:
         """Abre a janela de edição."""
