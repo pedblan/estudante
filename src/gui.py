@@ -11,10 +11,8 @@ import webbrowser
 import os
 from dotenv import load_dotenv
 
-load_dotenv()
 definir_permissoes()
 ffmpeg_instalado: bool = verificar_ffmpeg_instalado()
-ajustar_com_api = os.getenv("USAR_API_OCR", "False") == "True"
 
 
 class MainGUI:
@@ -25,7 +23,7 @@ class MainGUI:
             root (tk.Tk): A instância raiz do Tkinter.
         """
         self.root = root
-        self.root.title("Estudante v1.1")
+        self.root.title("Estudante v1.3")
         self.root.iconbitmap("src/icone.ico")
 
 

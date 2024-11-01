@@ -4,12 +4,18 @@ from typing import Union
 import pikepdf, os
 from PIL import Image, ImageTk
 from docx import Document
-
+from dotenv import load_dotenv
 from src.utils import reconhecer_ocr, adicionar_com_subtitulos, gravar_documento, abrir_doc_produzido
 from src.utils_gui import imagem_na_janela_secundaria, checkbox_mostrar_log_simplificado
 from src.requisitos import verificar_tesseract_instalado
 
+load_dotenv()
+ajustar_com_api = os.getenv("USAR_API_OCR", "False") == "True"
+
 tesseract_instalado : bool = verificar_tesseract_instalado()
+
+
+
 class PDFGUI:
     def __init__(self, root: tk.Tk) -> None:
         """Inicializa a GUI de OCR e desbloqueio de PDF.
@@ -54,7 +60,7 @@ class PDFGUI:
                 desbloquear(self.caminho_pdf)
 
 
-def pdf_ocr(caminho_arquivo: str) -> Union[bool, None]:
+def pdf_ocr(caminho_arquivo: str, ajustar_com_api) -> Union[bool, None]:
     """Processa o reconhecimento de texto em um arquivo PDF usando OCR e salva o resultado em um documento Word.
 
     Args:
@@ -65,7 +71,7 @@ def pdf_ocr(caminho_arquivo: str) -> Union[bool, None]:
     """
     print("Processando OCR...")
     try:
-        titulo, texto = reconhecer_ocr(caminho_arquivo)
+        titulo, texto = reconhecer_ocr(caminho_arquivo, ajustar_com_api)
         doc = Document()
         doc = adicionar_com_subtitulos(doc, texto)
         caminho_arquivo_salvo = gravar_documento(titulo, doc)

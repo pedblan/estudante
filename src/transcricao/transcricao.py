@@ -87,10 +87,6 @@ class TranscricaoGUI:
                                                  variable=self.timestamp_var)
         self.checkbox_timestamp.pack()
 
-        # Checkbox para mostrar log
-        checkbox_mostrar_log_simplificado(root, self)
-
-
         # Botão Enviar
         self.botao_enviar = tk.Button(root, text="Enviar", command=self.enviar)
         self.botao_enviar.pack(pady=10)

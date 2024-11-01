@@ -5,8 +5,9 @@ from tkinter import messagebox, BooleanVar
 
 from dotenv import load_dotenv
 from src.requisitos import verificar_api_key
-api_disponivel: bool = verificar_api_key()
 
+load_dotenv()
+api_disponivel: bool = verificar_api_key()
 
 class ConfigurarGUI:
     def __init__(self, root: tk.Tk):
@@ -18,7 +19,8 @@ class ConfigurarGUI:
             self.configurar_api_key_button = tk.Button(root, text="Configurar OpenAI API KEY", command=self.configurar_api_key)
             self.configurar_api_key_button.pack(pady=10)
 
-        self.usar_api_ocr_var = BooleanVar()
+        usar_api_ocr = os.getenv("USAR_API_OCR", "False") == "True"
+        self.usar_api_ocr_var = BooleanVar(value=usar_api_ocr)
         if api_disponivel:
             self.usar_api_ocr_checkbox = tk.Checkbutton(root, text="Usar API para ajustar OCR", variable=self.usar_api_ocr_var)
             self.usar_api_ocr_checkbox.pack(pady=10)
@@ -71,10 +73,27 @@ class ConfigurarGUI:
     def aplicar(self):
         if api_disponivel:
             usar_api_ocr = self.usar_api_ocr_var.get()
-            with open(".env", "a") as f:
-                f.write(f"USAR_API_OCR={usar_api_ocr}\n")
+            # Carregar o conteúdo existente do .env
+            env_path = ".env"
+            if os.path.exists(env_path):
+                with open(env_path, "r") as file:
+                    lines = file.readlines()
+            else:
+                lines = []
+
+            # Atualizar ou adicionar a variável USAR_API_OCR
+            with open(env_path, "w") as file:
+                found = False
+                for line in lines:
+                    if line.startswith("USAR_API_OCR="):
+                        file.write(f"USAR_API_OCR={usar_api_ocr}\n")
+                        found = True
+                    else:
+                        file.write(line)
+                if not found:
+                    file.write(f"USAR_API_OCR={usar_api_ocr}\n")
+
             load_dotenv()
-            messagebox.showinfo("Sucesso", "Configurações aplicadas com sucesso!")
 
     def cancelar(self):
         self.root.destroy()
