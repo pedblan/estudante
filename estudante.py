@@ -12,10 +12,9 @@ import tkinter as tk
 
 def main() -> None:
     """Função principal que verifica os requisitos do sistema e inicia a interface gráfica."""
-    if verificar_requisitos_sistema():
-        root = tk.Tk()
-        MainGUI(root)
-        root.mainloop()
+    root = tk.Tk()
+    MainGUI(root)
+    root.mainloop()
 
 if __name__ == "__main__":
     main()
