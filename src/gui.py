@@ -4,12 +4,17 @@ from src.transcricao.transcricao import TranscricaoGUI
 from src.resumo.resumo import ResumoGUI
 from src.pdf.pdf import PDFGUI
 from src.edicao.edicao import EdicaoGUI
+from src.config.config import ConfigurarGUI, api_disponivel
 from PIL import Image, ImageTk
-from src.requisitos import verificar_api_key, definir_permissoes, verificar_ffmpeg_instalado, verificar_tesseract_instalado
+from src.requisitos import verificar_api_key, definir_permissoes, verificar_ffmpeg_instalado
 import webbrowser
-from src.utils_gui import show_api_key_prompt
+import os
+from dotenv import load_dotenv
 
-api_disponivel: bool = verificar_api_key()
+load_dotenv()
+definir_permissoes()
+ffmpeg_instalado: bool = verificar_ffmpeg_instalado()
+ajustar_com_api = os.getenv("USAR_API_OCR", "False") == "True"
 
 
 class MainGUI:
@@ -23,8 +28,6 @@ class MainGUI:
         self.root.title("Estudante v1.1")
         self.root.iconbitmap("src/icone.ico")
 
-        if not api_disponivel:
-            show_api_key_prompt(root)
 
         self.criar_frame_botoes()
         self.criar_botoes()
@@ -38,11 +41,13 @@ class MainGUI:
     def criar_botoes(self) -> None:
         """Cria os botões principais com ícones."""
         botoes = [
-            ("src/transcricao/transcrever.png", "Transcrever", self.abrir_transcricao),
+            ("src/transcricao/transcrever.png", "Transcrever", self.abrir_transcricao if ffmpeg_instalado else None, tk.NORMAL if ffmpeg_instalado else tk.DISABLED),
             ("src/resumo/resumir.png", "Resumir", self.abrir_resumo, tk.NORMAL if api_disponivel else tk.DISABLED),
-            ("src/pdf/pdf.png", "PDF", self.abrir_, tk.NORMAL if api_disponivel else tk.DISABLED),
+            ("src/pdf/pdf.png", "PDF", self.abrir_pdf, tk.NORMAL if api_disponivel else tk.DISABLED),
             ("src/edicao/editar.png", "Revisar", self.abrir_edicao),
+            ("src/config/config.png", "Configurações", self.abrir_configuracoes),
             ("src/leiame/leia_me.png", "Leia-me", self.abrir_leiame_html)
+
         ]
 
         for caminho_imagem, texto, comando, *estado in botoes:
@@ -81,8 +86,8 @@ class MainGUI:
         nova_janela = tk.Toplevel(self.root)
         ResumoGUI(nova_janela)
 
-    def abrir_(self) -> None:
-        """Abre a janela de ."""
+    def abrir_pdf(self) -> None:
+        """Abre a janela de PDF."""
         nova_janela = tk.Toplevel(self.root)
         PDFGUI(nova_janela)
 
@@ -90,6 +95,11 @@ class MainGUI:
         """Abre a janela de edição."""
         nova_janela = tk.Toplevel(self.root)
         EdicaoGUI(nova_janela)
+
+    def abrir_configuracoes(self) -> None:
+        """Abre a janela de configurações."""
+        nova_janela = tk.Toplevel(self.root)
+        ConfigurarGUI(nova_janela)
 
     def abrir_leiame_html(self) -> None:
         """Abre o conteúdo do README em uma nova janela."""

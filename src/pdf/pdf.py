@@ -7,7 +7,9 @@ from docx import Document
 
 from src.utils import reconhecer_ocr, adicionar_com_subtitulos, gravar_documento, abrir_doc_produzido
 from src.utils_gui import imagem_na_janela_secundaria, checkbox_mostrar_log_simplificado
+from src.requisitos import verificar_tesseract_instalado
 
+tesseract_instalado : bool = verificar_tesseract_instalado()
 class PDFGUI:
     def __init__(self, root: tk.Tk) -> None:
         """Inicializa a GUI de OCR e desbloqueio de PDF.
@@ -30,7 +32,7 @@ class PDFGUI:
         # Frame para escolha do modo
         self.modo_var = tk.StringVar(value="ocr")
         tk.Label(root, text="Escolha o modo:").pack()
-        tk.Radiobutton(root, text="OCR", variable=self.modo_var, value="ocr").pack(anchor=tk.W)
+        tk.Radiobutton(root, text="OCR", variable=self.modo_var, value="ocr", state=tk.NORMAL if tesseract_instalado else tk.DISABLED).pack(anchor=tk.W)
         tk.Radiobutton(root, text="Desbloquear", variable=self.modo_var, value="desbloquear").pack(anchor=tk.W)
 
         # Botão Enviar

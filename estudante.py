@@ -6,7 +6,6 @@
 # Este software é distribuído sob a Licença MIT.
 # Consulte o arquivo LICENSE para obter mais informações.
 
-from src.requisitos import verificar_requisitos_sistema
 from src.gui import MainGUI
 import tkinter as tk
 

@@ -397,7 +397,7 @@ def adicionar_com_subtitulos(doc: Document, resumo: str) -> Document:
     return doc
 
 
-def reconhecer_ocr(caminho_arquivo: str) -> Tuple[str, str]:
+def reconhecer_ocr(caminho_arquivo: str, ajustar_com_api: bool) -> Tuple[str, str]:
     """Reconhece texto em imagens de um arquivo PDF usando OCR.
 
     Args:
@@ -417,8 +417,11 @@ def reconhecer_ocr(caminho_arquivo: str) -> Tuple[str, str]:
 
         # Usa o Tesseract para extrair o texto da imagem
         texto_ocr = pytesseract.image_to_string(imagem)
-        texto_ocr_ajustado = ajustar_texto(texto_ocr)
-        texto_revisado += texto_ocr_ajustado
+        if ajustar_com_api:
+            texto_ocr_ajustado = ajustar_texto(texto_ocr)
+            texto_revisado += texto_ocr_ajustado
+        else:
+            texto_revisado += texto_ocr
 
     documento.close()
     titulo = os.path.splitext(os.path.basename(caminho_arquivo))[0]
