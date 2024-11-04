@@ -8,9 +8,11 @@
 
 from src.gui import MainGUI
 import tkinter as tk
+from src.requisitos import definir_permissoes
 
 def main() -> None:
     """Função principal que verifica os requisitos do sistema e inicia a interface gráfica."""
+    definir_permissoes()
     root = tk.Tk()
     MainGUI(root)
     root.mainloop()

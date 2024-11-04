@@ -4,14 +4,13 @@ from src.transcricao.transcricao import TranscricaoGUI
 from src.resumo.resumo import ResumoGUI
 from src.pdf.pdf import PDFGUI
 from src.edicao.edicao import EdicaoGUI
-from src.config.config import ConfigurarGUI, api_disponivel
+from src.config.config import ConfigGUI, api_disponivel
 from PIL import Image, ImageTk
-from src.requisitos import verificar_api_key, definir_permissoes, verificar_ffmpeg_instalado
+from src.requisitos import verificar_ffmpeg_instalado
 import webbrowser
 import os
 from dotenv import load_dotenv
 
-definir_permissoes()
 ffmpeg_instalado: bool = verificar_ffmpeg_instalado()
 
 
@@ -97,7 +96,7 @@ class MainGUI:
     def abrir_configuracoes(self) -> None:
         """Abre a janela de configurações."""
         nova_janela = tk.Toplevel(self.root)
-        ConfigurarGUI(nova_janela)
+        ConfigGUI(nova_janela)
 
     def abrir_leiame_html(self) -> None:
         """Abre o conteúdo do README em uma nova janela."""

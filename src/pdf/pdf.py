@@ -55,7 +55,7 @@ class PDFGUI:
         """Envia o arquivo PDF para o processamento selecionado."""
         if hasattr(self, 'caminho_pdf'):
             if self.modo_var.get() == "ocr":
-                pdf_ocr(self.caminho_pdf)
+                pdf_ocr(self.caminho_pdf, ajustar_com_api)
             elif self.modo_var.get() == "desbloquear":
                 desbloquear(self.caminho_pdf)
 

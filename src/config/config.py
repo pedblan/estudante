@@ -1,18 +1,21 @@
 import os
 import tkinter as tk
-import webbrowser
 from tkinter import messagebox, BooleanVar
-
 from dotenv import load_dotenv
-from src.requisitos import verificar_api_key
+from src.requisitos import verificar_api_key, instalar_ffmpeg, instalar_tesseract, verificar_ffmpeg_instalado, verificar_tesseract_instalado
 
 load_dotenv()
 api_disponivel: bool = verificar_api_key()
 
-class ConfigurarGUI:
-    def __init__(self, root: tk.Tk):
+class ConfigGUI:
+    def __init__(self, root: tk.Tk) -> None:
+        """Inicializa a interface gráfica de configuração.
+
+        Args:
+            root (tk.Tk): A janela principal da aplicação Tkinter.
+        """
         self.root = root
-        self.root.title("Configurar Programa")
+        self.root.title("Configurações")
         self.root.geometry("400x300")
 
         if not api_disponivel:
@@ -25,6 +28,18 @@ class ConfigurarGUI:
             self.usar_api_ocr_checkbox = tk.Checkbutton(root, text="Usar API para ajustar OCR", variable=self.usar_api_ocr_var)
             self.usar_api_ocr_checkbox.pack(pady=10)
 
+        if not verificar_tesseract_instalado():
+            tesseract_label = tk.Label(root, text="O Tesseract é necessário para reconhecer OCR, mas não está instalado. Deseja instalá-lo?")
+            tesseract_label.pack(pady=5)
+            self.instalar_tesseract_button = tk.Button(root, text="Instalar Tesseract", command=instalar_tesseract)
+            self.instalar_tesseract_button.pack(pady=10)
+
+        if not verificar_ffmpeg_instalado():
+            ffmpeg_label = tk.Label(root, text="O FFmpeg é necessário para transcrições, mas não está instalado. Deseja instalá-lo?")
+            ffmpeg_label.pack(pady=5)
+            self.instalar_ffmpeg_button = tk.Button(root, text="Instalar FFmpeg", command=instalar_ffmpeg)
+            self.instalar_ffmpeg_button.pack(pady=10)
+
         self.aplicar_button = tk.Button(root, text="Aplicar", command=self.aplicar)
         self.aplicar_button.pack(side=tk.LEFT, padx=10, pady=10)
 
@@ -34,7 +49,8 @@ class ConfigurarGUI:
         self.ok_button = tk.Button(root, text="OK", command=self.ok)
         self.ok_button.pack(side=tk.LEFT, padx=10, pady=10)
 
-    def configurar_api_key(self):
+    def configurar_api_key(self) -> None:
+        """Abre uma janela para inserir a chave da API OpenAI."""
         key_prompt_window = tk.Toplevel(self.root)
         key_prompt_window.title("Inserir OpenAI API Key")
         key_prompt_window.geometry("400x250")
@@ -49,7 +65,8 @@ class ConfigurarGUI:
         save_key_checkbox = tk.Checkbutton(key_prompt_window, text="Salvar minha API Key", variable=save_key_var)
         save_key_checkbox.pack(pady=5)
 
-        def save_api_key():
+        def save_api_key() -> None:
+            """Salva a chave da API inserida pelo usuário."""
             api_key = api_key_entry.get()
             if api_key:
                 if save_key_var.get():
@@ -70,7 +87,8 @@ class ConfigurarGUI:
         tk.Button(key_prompt_window, text="Salvar Key", command=save_api_key).pack(pady=5)
         tk.Button(key_prompt_window, text="Cancelar", command=key_prompt_window.destroy).pack(pady=5)
 
-    def aplicar(self):
+    def aplicar(self) -> None:
+        """Aplica as configurações definidas pelo usuário."""
         if api_disponivel:
             usar_api_ocr = self.usar_api_ocr_var.get()
             # Carregar o conteúdo existente do .env
@@ -95,14 +113,16 @@ class ConfigurarGUI:
 
             load_dotenv()
 
-    def cancelar(self):
+    def cancelar(self) -> None:
+        """Fecha a janela de configuração sem salvar as alterações."""
         self.root.destroy()
 
-    def ok(self):
+    def ok(self) -> None:
+        """Aplica as configurações e fecha a janela de configuração."""
         self.aplicar()
         self.root.destroy()
 
 if __name__ == "__main__":
     root = tk.Tk()
-    app = ConfigurarGUI(root)
+    app = ConfigGUI(root)
     root.mainloop()

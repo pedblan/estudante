@@ -1,12 +1,13 @@
 import subprocess
 import os, stat
 from src.utils import PASTA_DESTINO
+import platform
+
 
 def definir_permissoes() -> None:
     """Define permissões de leitura, escrita e execução para o diretório especificado."""
     try:
         os.chmod(PASTA_DESTINO, stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO)
-        print(f"Permissões definidas para {PASTA_DESTINO}")
     except PermissionError:
         print(f"Permissão negada ao tentar definir permissões para {PASTA_DESTINO}. Rode o programa com privilégios de administrador.")
     except Exception as e:
@@ -50,4 +51,42 @@ def verificar_tesseract_instalado() -> bool:
         print("Tesseract OCR não está instalado ou não está no PATH. Instale o Tesseract OCR. Disponível em https://github.com/tesseract-ocr/tesseract. Caso o instalador pergunte, peça para adicionar o programa à variável de ambiente PATH.")
         return False
 
+import subprocess
+import os
+import platform
 
+def instalar_tesseract() -> None:
+    """Instala o Tesseract OCR usando o gerenciador de pacotes nativo do sistema operacional."""
+    sistema = platform.system()
+    try:
+        if sistema == "Darwin":  # macOS
+            subprocess.run(["brew", "install", "tesseract"], check=True)
+        elif sistema == "Windows":
+            subprocess.run(["winget", "install", "--id", "UB-Mannheim.Tesseract-OCR", "-e"], check=True)
+        else:
+            print(f"Sistema operacional {sistema} não suportado para instalação automática do Tesseract.")
+    except subprocess.CalledProcessError as e:
+        print(f"Erro ao instalar o Tesseract: {e}")
+
+def instalar_ffmpeg() -> None:
+    """Instala o FFmpeg usando o gerenciador de pacotes nativo do sistema operacional."""
+    sistema = platform.system()
+    try:
+        if sistema == "Darwin":  # macOS
+            subprocess.run(["brew", "install", "ffmpeg"], check=True)
+        elif sistema == "Windows":
+            subprocess.run(["winget", "install", "--id", "Gyan.FFmpeg", "-e"], check=True)
+        else:
+            print(f"Sistema operacional {sistema} não suportado para instalação automática do FFmpeg.")
+    except subprocess.CalledProcessError as e:
+        print(f"Erro ao instalar o FFmpeg: {e}")
+
+def garantir_pacotes_no_path() -> None:
+    """Garante que os pacotes Tesseract e FFmpeg estejam no PATH."""
+    sistema = platform.system()
+    if sistema == "Darwin":  # macOS
+        os.environ["PATH"] += ":/usr/local/bin"
+    elif sistema == "Windows":
+        os.environ["PATH"] += ";C:\\Program Files\\Tesseract-OCR;C:\\Program Files\\ffmpeg\\bin"
+    else:
+        print(f"Sistema operacional {sistema} não suportado para configuração automática do PATH.")
