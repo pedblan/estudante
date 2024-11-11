@@ -126,12 +126,15 @@ class TranscricaoGUI:
         suprimir_avisos(self.mostrar_log_var.get())
 
         tipo_midia = self.tipo_midia_var.get()
+        usar_api = self.metodo_var.get() == 'api'  # Corrigido para verificar o método de transcrição
+
         if tipo_midia == "audio" and hasattr(self, 'caminho_arquivo'):
-            self.run_in_thread(audio, self.caminho_arquivo, self.idioma_var.get(), self.metodo_var.get() == 'api', self.timestamp_var.get(), self.whisper_model_var.get() if self.metodo_var.get() == 'local' else None)
+            self.run_in_thread(audio, self.caminho_arquivo, self.idioma_var.get(), usar_api, self.timestamp_var.get(),
+                               self.whisper_model_var.get() if not usar_api else None)
         elif tipo_midia == "youtube" and self.youtube_url_entry.get():
             youtube_url = self.youtube_url_entry.get()
-            self.run_in_thread(youtube, youtube_url, self.idioma_var.get(), self.metodo_var.get() == 'api', self.timestamp_var.get(), self.whisper_model_var.get() if self.metodo_var.get() == 'local' else None)
-
+            self.run_in_thread(youtube, youtube_url, self.idioma_var.get(), usar_api, self.timestamp_var.get(),
+                               self.whisper_model_var.get() if not usar_api else None)
     def run_in_thread(self, func: callable, *args) -> None:
         """Executa uma função em uma nova thread.
 
