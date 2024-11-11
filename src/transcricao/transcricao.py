@@ -126,7 +126,7 @@ class TranscricaoGUI:
         suprimir_avisos(self.mostrar_log_var.get())
 
         tipo_midia = self.tipo_midia_var.get()
-        usar_api = self.metodo_var.get() == 'api'  # Corrigido para verificar o método de transcrição
+        usar_api = self.metodo_var.get() == 'api'
 
         if tipo_midia == "audio" and hasattr(self, 'caminho_arquivo'):
             self.run_in_thread(audio, self.caminho_arquivo, self.idioma_var.get(), usar_api, self.timestamp_var.get(),
