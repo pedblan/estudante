@@ -127,14 +127,15 @@ class TranscricaoGUI:
 
         tipo_midia = self.tipo_midia_var.get()
         usar_api = self.metodo_var.get() == 'api'
+        max_palavras = 80  # Defina o valor de max_palavras conforme necessário
 
         if tipo_midia == "audio" and hasattr(self, 'caminho_arquivo'):
-            self.run_in_thread(audio, self.caminho_arquivo, self.idioma_var.get(), usar_api, self.timestamp_var.get(),
-                               self.whisper_model_var.get() if not usar_api else None)
+            self.run_in_thread(audio, self.caminho_arquivo, self.idioma_var.get(), usar_api, max_palavras,
+                               self.timestamp_var.get())
         elif tipo_midia == "youtube" and self.youtube_url_entry.get():
             youtube_url = self.youtube_url_entry.get()
-            self.run_in_thread(youtube, youtube_url, self.idioma_var.get(), usar_api, self.timestamp_var.get(),
-                               self.whisper_model_var.get() if not usar_api else None)
+            self.run_in_thread(youtube, youtube_url, self.idioma_var.get(), usar_api, max_palavras,
+                               self.timestamp_var.get())
     def run_in_thread(self, func: callable, *args) -> None:
         """Executa uma função em uma nova thread.
 
