@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import scrolledtext
 from src.transcricao.transcricao import TranscricaoGUI
+from src.leiturinha.leiturinha import LeiturinhaGUI
 from src.resumo.resumo import ResumoGUI
 from src.pdf.pdf import PDFGUI
 from src.edicao.edicao import EdicaoGUI
@@ -42,6 +43,7 @@ class MainGUI:
             ("src/resumo/resumir.png", "Resumir", self.abrir_resumo, tk.NORMAL if api_disponivel else tk.DISABLED),
             ("src/pdf/pdf.png", "PDF", self.abrir_pdf, tk.NORMAL if api_disponivel else tk.DISABLED),
             ("src/edicao/editar.png", "Revisar", self.abrir_edicao),
+            ("src/leiturinha/leiturinha.png", "Leitura Rápida", self.abrir_leiturinha),
             ("src/config/config.png", "Configurações", self.abrir_configuracoes),
             ("src/leiame/leia_me.png", "Leia-me", self.abrir_leiame_html)
 
@@ -92,6 +94,11 @@ class MainGUI:
         """Abre a janela de edição."""
         nova_janela = tk.Toplevel(self.root)
         EdicaoGUI(nova_janela)
+
+    def abrir_leiturinha(self) -> None:
+        """Abre a janela de leitura rápida."""
+        nova_janela = tk.Toplevel(self.root)
+        LeiturinhaGUI(nova_janela)
 
     def abrir_configuracoes(self) -> None:
         """Abre a janela de configurações."""
