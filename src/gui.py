@@ -43,7 +43,7 @@ class MainGUI:
             ("src/resumo/resumir.png", "Resumir", self.abrir_resumo, tk.NORMAL if api_disponivel else tk.DISABLED),
             ("src/pdf/pdf.png", "PDF", self.abrir_pdf, tk.NORMAL if api_disponivel else tk.DISABLED),
             ("src/edicao/editar.png", "Revisar", self.abrir_edicao),
-            ("src/leiturinha/leiturinha.png", "Leitura Rápida", self.abrir_leiturinha),
+            ("src/leiturinha/leiturinha.png", "Leiturinha", self.abrir_leiturinha),
             ("src/config/config.png", "Configurações", self.abrir_configuracoes),
             ("src/leiame/leia_me.png", "Leia-me", self.abrir_leiame_html)
 
