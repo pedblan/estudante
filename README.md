@@ -61,6 +61,7 @@ Este programa faz algumas tarefas úteis ao estudante: transcreve áudios ou ví
     - winget install Git.Git
     - winget install Gyan.FFmpeg
     - winget install UBMan.Tesseract
+    -   https://github.com/tesseract-ocr/tesseract/releases/download/5.5.0/tesseract-ocr-w64-setup-5.5.0.20241111.exe
 
 
   - Clone o repositório:
