@@ -1,120 +1,43 @@
-**Descrição**
+# Estudante
+#### Video Demo:  https://youtu.be/hJdjAFrrKYY
+#### Description:
+run it with
 
-Este programa faz algumas tarefas úteis ao estudante: transcreve áudios ou vídeos do YouTube de qualquer duração, resume textos em PDF ou DOCX, reconhece o texto de documentos PDF fotografados e faz revisão estilística de documentos DOCX. As três primeiras tarefas se valem dos modelos de inteligência artificial da empresa OpenAI, sendo que o resumo e a leitura OCR só são possíveis àqueles que tiverem uma API key. O conteúdo produzido é armazenado num arquivo DOCX na pasta saída do computador. Se tudo der certo, o arquivo gerado é aberto automaticamente.
+python -m estudante
 
-**Requisitos**
+Estudante is my first app!
+Initially, it was supposed to be a Python app to help people use the OpenAI API to make transcriptions of YouTube
+videos or audio files.
+My intention was threefold. First, I'd like to help a friend from work – a kind, but busy and not very 'computery' man, who
+has no time or curiosity to learn  how to use the API). He was taking some online courses and used to ask me all the time
+to make transcriptions of his
+classes, which I did, using the OpenAI API – at a small cost to myself. So I'd like to help him and others like him, as
+well as free myself from this little 'bill'. The user is linked to the OpenAI platform page and, after making his or her
+own key, can just type it into the app's configurations. The app would then use this key to make its transcriptions.
+Second, I wanted to be able to transcribe long videos and audios (say, transcribe a whole class or meeting and find the
+useful parts using a CTRL + F word search). At the time, I hadn't seen any transcribing app that
+had no limit on the length of the audio or video to be transcribed. So I used ffmpeg (a freely available command line
+software) to divide the audio in smaller pieces that are accepted by the API. Then I'd combine the transcriptions of
+these pieces into a single docx file. Using docx was a choice I made because it's a very common format among students
+and office workers, like me and my friend. I'd download youtube media using the youtube-dl library.
+Finally, I'd like to gain experience writing GUI apps. I used the Tkinter library for this. I had never written a GUI app
+and for me it seemed like an important part of being a programmer (I know that probably sound pretty noob, but in me lives
+a person who likes comfort).
+Anyways, I eventually got really hooked on developing and started adding new features. Since I'm a student myself (I'm a writer
+and a Law student), I thought of all the things that would be useful to me and my friends. I added the possibility of
+summarizing PDFs and docxs, with default prompts that I have from my own academic experience (I have a masters in
+History and Literature from Columbia University), as well as from study skills tips from books like Cal Newport's 'How
+to be a Straight-A Student'.
+I also added the possibility of converting photographed PDFs into docx files. I used the Tesseract library for this.
+I also added a feature to help edit text. I used the spaCy library to help with this: it highlights adjectives and adverbs,
+providing users with suggestions on where to cut or expand their argumentation (say show, not tell).
+Finally, I added the possibility of reading text with RSVP (Rapid Serial Visual Presentation), a technique that supposedly
+helps you reading faster. 
+All of the output files are saved in a folder called 'saida' in the app's directory.
+One thing that broke my heart about the experience was that I was never able to make a standalone app. Apparently, tkinter-based GUIs
+are not very suitable for that. I tried to use PyInstaller, but it didn't work. I also tried to use Py2app and others, but I couldn't do it either.
+I even tried to use this library based in Rust, a language I had never even heard about! Maybe I'll try harder in the future, or switch to another GUI library, or even language.
+Another task that must be done is to improve the security of the user’s API key (it’s storaged in an env file).
+That's not very safe, I guess, but I think this flaw can be forgiven since OpenAI has plenty of limits users can add to restrict abuse of their API keys.
 
-
-  - Python **até versão 3.12.2**
-  - Git
-  - ffmpeg
-  - tesseract
-  - modelos spaCy (v. instruções de instalação)
-  - Microsoft Word
-  - Para uso de API: 2 a 4 GB de RAM, processador básico
-  - Para uso de modelos Whisper locais: pelo menos 5GB de disco rígido e 8 a 16 GB de RAM
-
-**Instalação**
-
-*MacOS/Linux*
-
-- Abra o terminal e execute os seguintes comandos:
-
-  - Instale os requisitos:
-    - brew install git
-    - brew install ffmpeg
-    - brew install tesseract  
-
-  - Clone o repositório:
-  git clone https://github.com/pedblan/estudante.git
- 
-  - Acesse o diretório do projeto:
-  cd estudante
- 
-  - Crie um ambiente virtual (venv):
-  python3 -m venv venv
- 
-  - Ative o ambiente virtual:
-  source venv/bin/activate
- 
-  - Instale as dependências:
-  pip install -r requirements.txt
-
-  - Baixe os modelos spaCy:
-  python -m spacy download pt_core_news_md
-  python -m spacy download en_core_web_md
- 
-  - Crie um atalho para facilitar o uso (opcional) :
-  echo "source venv/bin/activate && python3 estudante.py" > estudante.sh
- 
-  - Dê permissão de execução ao atalho:
-  chmod +x estudante.sh
- 
-  - Para rodar o programa, digite no terminal o seguinte comando:
-  ./estudante.sh
-
-*Windows*
-
-- Abra o PowerShell (ou o Prompt de Comando) e execute os seguintes comandos:
-
-  - Instale os requisitos:
-    - winget install Git.Git
-    - winget install Gyan.FFmpeg
-    - winget install UBMan.Tesseract
-
-
-  - Clone o repositório:
-  git clone https://github.com/pedblan/estudante.git
- 
-  - Acesse o diretório do projeto:
-  cd estudante
- 
-  - Crie um ambiente virtual (venv):
-  python -m venv venv
- 
-  - Ative o ambiente virtual (no PowerShell):
-  ./venv/Scripts/Activate.ps1
- 
-  - Ou ative no Prompt de Comando (cmd.exe):
-  venv\Scripts\activate.bat
- 
-  - Instale as dependências:
-  pip install -r requirements.txt
-
-  - Baixe os modelos spaCy:
-  python -m spacy download pt_core_news_md
-  python -m spacy download en_core_web_md
- 
-  - Crie um atalho para facilitar o uso (opcional):
-  echo "venv\Scripts\Activate.ps1; python estudante.py" > estudante.bat
-
-
-**Funcionalidades**
-
-  - Transcrição de arquivos de áudio e vídeos do YouTube e similares, de qualquer duração. O programa divide o áudio em partes e depois combina as respectivas transcrições.
-  - Conversão de arquivos PDF fotografados em DOCX.
-  - Resumos de arquivos PDF e DOCX.
-    - Para as transcrições, você pode usar uma versão simplificada da API (interface de programação) da OpenAI (mais rápido e melhor, mas o serviço é pago) ou uma versão local do modelo Whisper.
-    - Caso você use a API, precisa usar uma "key" (uma espécie de senha), que pode obter em [OpenAI](https://platform.openai.com/signup).
-  - Este programa possibilita salvar a "key" de maneira **NÃO** criptografada. Não é a coisa mais segura do mundo, mas a conta OpenAI oferece vários mecanismos de controle de gastos. Na pior das hipóteses, alguém vai usar o GPT às suas custas, até o limite estabelecido.
-  - Caso queira usar Whisper, você pode escolher modelos de vários tamanhos. O sistema descarrega o modelo na primeira vez que você o usa.
-    - **Tiny**: rápido, porém tosco.
-    - **Base**: recomendado.
-    - **Small**: demora. Perca uma rodada.
-    - **Medium**: demora muito. Desative o protetor de tela e vá dar um passeio.
-    - **Large** (~3GB de download + processamento): coloque a transcrição no seu testamento, porque vai demorar a sua vida inteira!
-  - Certifique-se de que escolheu o idioma certo! Do contrário, a transcrição sai esquisita, não importa o modelo escolhido.
-  - A função **Timestamp** inclui a marcação do tempo do vídeo em que se tenha dado determinada fala transcrita. Ela pode engolir algumas palavras, porque os segundos são arredondados para fins de clareza.
-  - Editor:
-    - Num documento Word, marca em amarelo adjetivos, advérbios e verbos na voz passiva, para revisão.
-
-**Como usar**
-
-  - Selecione a tarefa desejada (transcrição ou resumo) e siga as instruções para enviar um arquivo ou inserir um link.
-
-Desenvolvido por Pedro Duarte Blanco com base em gpt-4o e whisper-1, sob licença MIT.
-
-**Contato**
-
-- [Substack](https://pedblan.substack.com)
-- E-mail: pedblan@gmail.com
+Well, I hope you enjoyed reading this as much as I enjoyed making the app. Thanks again for the course!

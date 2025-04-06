@@ -11,6 +11,8 @@ import spacy
 from docx import Document
 from docx.oxml import parse_xml
 from docx.oxml.ns import nsdecls
+from deep_translator import GoogleTranslator
+from nltk.corpus import wordnet as wn
 
 from openai import OpenAI
 import whisper
@@ -184,7 +186,7 @@ def dividir_texto(texto: str) -> None:
     pass
 
 def revisar(caminho_arquivo: str, idioma: str) -> Tuple[str, Document]:
-    """Revisa um documento Word, destacando adjetivos, advérbios e verbos na voz passiva.
+    """Revisa um documento Word, destacando adjetivos, advérbios, verbos na voz passiva, conectores, verbos auxiliares e substantivos abstratos com cores distintas.
 
     Args:
         caminho_arquivo (str): Caminho do arquivo Word.
@@ -193,39 +195,109 @@ def revisar(caminho_arquivo: str, idioma: str) -> Tuple[str, Document]:
     Returns:
         Tuple[str, Document]: Título do documento e objeto Document revisado.
     """
+    # Carregar o modelo spaCy grande para o idioma selecionado
     if idioma == 'pt':
-        nlp = spacy.load('pt_core_news_md')
-    if idioma == 'en':
-        nlp = spacy.load('en_core_web_md')
+        nlp = spacy.load('pt_core_news_lg')
+    elif idioma == 'en':
+        nlp = spacy.load('en_core_web_lg')
+    else:
+        raise ValueError("Idioma não suportado. Use 'pt' ou 'en'.")
+
+    # Função para verificar se um verbo está na voz passiva
     def is_passive(verb):
         return 'Voice=Pass' in verb.morph
-    def add_highlight(run):
-        highlight = parse_xml(r'<w:highlight {} w:val="yellow"/>'.format(nsdecls('w')))
+
+    # Função para aplicar destaque com cores diferentes
+    def add_highlight(run, color):
+        highlight = parse_xml(r'<w:highlight {} w:val="{}"/>'.format(nsdecls('w'), color))
         run._r.get_or_add_rPr().append(highlight)
 
+    # Função para traduzir palavra para inglês, se necessário
+    def traduzir_para_ingles(palavra: str) -> str:
+        try:
+            return GoogleTranslator(source='pt', target='en').translate(palavra)
+        except Exception as e:
+            print(f"Erro ao traduzir '{palavra}': {e}")
+            return palavra
+
+    # Função para verificar se uma palavra é substantivo abstrato
+    def is_abstract(word: str, lang: str = 'por') -> bool:
+        from nltk.corpus import wordnet as wn
+        try:
+            synsets = wn.synsets(word, lang=lang)
+            if not synsets and lang == 'por':
+                translated_word = traduzir_para_ingles(word)
+                synsets = wn.synsets(translated_word, lang='eng')
+
+            for syn in synsets:
+                if syn.pos() == 'n' and "abstraction" in syn.lexname():
+                    return True
+            return False
+        except Exception as e:
+            print(f"Erro ao verificar substantivo abstrato para '{word}': {e}")
+            return False
+
+    # Mapear categorias para cores
+    style_colors = {
+        'ADJ': 'yellow',  # Adjetivos
+        'ADV': 'green',   # Advérbios
+        'VERB_PASSIVE': 'cyan',  # Verbos na voz passiva
+        'CONNECTOR': 'pink',  # Conectores
+        'AUX_VERB': 'lightblue',  # Verbos auxiliares
+        'ABSTRACT_NOUN': 'orange'  # Substantivos abstratos
+    }
+
+    # Listas de conectores e verbos auxiliares para os idiomas
+    conectores_pt = [
+        "e", "ou", "mas", "porém", "portanto", "contudo", "todavia", "entretanto",
+        "que", "no entanto", "além disso", "assim", "consequentemente", "nesse sentido"
+    ]
+    verbos_auxiliares_pt = ["ser", "estar", "ter", "haver"]
+    conectores_en = [
+        "and", "or", "but", "however", "therefore", "moreover", "furthermore",
+        "that", "nevertheless", "besides", "thus", "consequently"
+    ]
+    verbos_auxiliares_en = ["be", "have", "do", "shall", "will", "may", "can"]
+
+    conectores = conectores_pt if idioma == 'pt' else conectores_en
+    verbos_auxiliares = verbos_auxiliares_pt if idioma == 'pt' else verbos_auxiliares_en
+
+    # Carregar o documento Word
     doc = Document(caminho_arquivo)
 
     for para in doc.paragraphs:
         doc_para = nlp(para.text)
-        runs = []
 
-        # Percorre cada token e aplica o destaque conforme necessário
+        # Reescrever o parágrafo diretamente preservando a formatação
+        new_paragraph = []
+
         for token in doc_para:
-            run = para.add_run(token.text)
-            if token.pos_ in ['ADJ', 'ADV'] or (token.pos_ == 'VERB' and is_passive(token)):
-                add_highlight(run)
-            runs.append(run)
+            if token.pos_ == 'ADJ':
+                new_paragraph.append((token.text, style_colors['ADJ']))
+            elif token.pos_ == 'ADV':
+                new_paragraph.append((token.text, style_colors['ADV']))
+            elif token.pos_ == 'VERB' and is_passive(token):
+                new_paragraph.append((token.text, style_colors['VERB_PASSIVE']))
+            elif token.lemma_.lower() in conectores:  # Usa o lema para conectores
+                new_paragraph.append((token.text, style_colors['CONNECTOR']))
+            elif token.lemma_.lower() in verbos_auxiliares:  # Usa o lema para verbos auxiliares
+                new_paragraph.append((token.text, style_colors['AUX_VERB']))
+            elif token.pos_ == 'NOUN' and is_abstract(token.text, lang='por'):
+                new_paragraph.append((token.text, style_colors['ABSTRACT_NOUN']))
+            else:
+                new_paragraph.append((token.text, None))
 
-            # Adiciona o espaço em branco após o token
             if token.whitespace_:
-                run = para.add_run(token.whitespace_)
-                runs.append(run)
+                new_paragraph.append((token.whitespace_, None))
 
-        # Substitui o conteúdo do parágrafo preservando a formatação original
+        # Limpar e reconstruir o parágrafo
         para.clear()
-        for run in runs:
-            para._element.append(run._element)
+        for text, color in new_paragraph:
+            run = para.add_run(text)
+            if color:
+                add_highlight(run, color)
 
+    # Extrair o título do arquivo
     titulo = os.path.splitext(os.path.basename(caminho_arquivo))[0]
 
     return titulo, doc

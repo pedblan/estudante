@@ -69,3 +69,4 @@ def revisar_docx(caminho_arquivo: str, idioma: str) -> Union[bool, None]:
     except Exception as e:
         print(f"Erro ao processar DOCX: {str(e)}")
         return False
+
