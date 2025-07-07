@@ -9,9 +9,11 @@
 from src.gui import MainGUI
 import tkinter as tk
 from src.requisitos import definir_permissoes
+from src.utils.load_env import load_env
 
 def main() -> None:
     """Função principal que verifica os requisitos do sistema e inicia a interface gráfica."""
+    load_env()
     definir_permissoes()
     root = tk.Tk()
     MainGUI(root)
