@@ -36,10 +36,6 @@ def imagem_na_janela_secundaria(root, caminho_arquivo_imagem: str) -> None:
     imagem_label.image = icone  # Manter referência
     imagem_label.pack(pady=10)
 
-def checkbox_mostrar_log_simplificado(root: tk.Misc, mostrar_log_var: tk.BooleanVar) -> tk.Checkbutton:
-    """Cria um checkbox ligado a ``mostrar_log_var`` para habilitar log simplificado."""
-    checkbox_mostrar_log = tk.Checkbutton(
-        root, text="Mostrar log simplificado", variable=mostrar_log_var
-    )
+def checkbox_mostrar_log_simplificado(root, self):
+    checkbox_mostrar_log = tk.Checkbutton(root, text="Mostrar log simplificado", variable=self.mostrar_log_var)
     checkbox_mostrar_log.pack(pady=5)
-    return checkbox_mostrar_log
