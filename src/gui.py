@@ -5,7 +5,7 @@ from src.leiturinha.leiturinha import LeiturinhaGUI
 from src.resumo.resumo import ResumoGUI
 from src.pdf.pdf import PDFGUI
 from src.edicao.edicao import EdicaoGUI
-from src.config.config import ConfigGUI, api_disponivel
+from src.config.config import ConfigGUI
 from PIL import Image, ImageTk
 from src.requisitos import verificar_ffmpeg_instalado, verificar_api_key
 import webbrowser
@@ -42,6 +42,7 @@ class MainGUI:
 
     def criar_botoes(self) -> None:
         """Cria os botões principais com ícones."""
+        api_disponivel = verificar_api_key()
         botoes = [
             ("src/transcricao/transcrever.png", "Transcrever", self.abrir_transcricao if ffmpeg_instalado else None, tk.NORMAL if ffmpeg_instalado else tk.DISABLED, None),
             ("src/resumo/resumir.png", "Resumir", self.abrir_resumo, tk.NORMAL if api_disponivel else tk.DISABLED, "botao_resumo"),
