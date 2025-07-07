@@ -6,7 +6,7 @@ from PIL import Image, ImageTk
 from docx import Document
 
 from src.utils import extrair_texto, adicionar_com_subtitulos, gravar_documento, abrir_doc_produzido, limpar_temp
-from src.utils_gui import imagem_na_janela_secundaria, checkbox_mostrar_log_simplificado
+from src.utils_gui import imagem_na_janela_secundaria
 from src.utils_ia import resumir_texto
 
 

@@ -2,3 +2,11 @@
 /saida/
 /src/transcricao/temp/
 /temp/
+
+# macOS metadata
+.DS_Store
+# IDE files
+.idea/
+# Python bytecode
+__pycache__/
+

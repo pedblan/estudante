@@ -6,7 +6,7 @@ from PIL import Image, ImageTk
 from docx import Document
 from dotenv import load_dotenv
 from src.utils import reconhecer_ocr, adicionar_com_subtitulos, gravar_documento, abrir_doc_produzido
-from src.utils_gui import imagem_na_janela_secundaria, checkbox_mostrar_log_simplificado
+from src.utils_gui import imagem_na_janela_secundaria
 from src.requisitos import verificar_tesseract_instalado
 
 load_dotenv()
@@ -91,11 +91,12 @@ def desbloquear(caminho_arquivo: str) -> Union[bool, None]:
         Union[bool, None]: Retorna True se o PDF foi desbloqueado com sucesso,
         None caso contrário.
     """
-    pdf = pikepdf.open(caminho_arquivo, allow_overwriting_input=True)
     try:
         print("Desbloqueando PDF...")
-        pdf.save(caminho_arquivo)
+        with pikepdf.open(caminho_arquivo, allow_overwriting_input=True) as pdf:
+            pdf.save(caminho_arquivo)
         print(f"PDF {caminho_arquivo} desbloqueado com sucesso!")
+        return True
     except Exception as e:
         print(f"Erro no desbloqueio do PDF: {str(e)}")
         return False
