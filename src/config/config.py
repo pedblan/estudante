@@ -1,10 +1,13 @@
 import os
 import tkinter as tk
 from tkinter import messagebox, BooleanVar
-from dotenv import load_dotenv
+from dotenv import load_dotenv, set_key
+from src.paths import BASE_DIR
 from src.requisitos import verificar_api_key, instalar_ffmpeg, instalar_tesseract, verificar_ffmpeg_instalado, verificar_tesseract_instalado
 
-load_dotenv()
+ENV_PATH = BASE_DIR.parent / ".env"
+
+load_dotenv(ENV_PATH)
 api_disponivel: bool = verificar_api_key()
 
 class ConfigGUI:
@@ -71,15 +74,21 @@ class ConfigGUI:
             if api_key:
                 if save_key_var.get():
                     try:
-                        with open(".env", "w") as f:
-                            f.write(f"OPENAI_API_KEY={api_key}\n")
-                        load_dotenv()
+                        set_key(str(ENV_PATH), "OPENAI_API_KEY", api_key)
+                        load_dotenv(str(ENV_PATH))
                         messagebox.showinfo("Sucesso", "API Key salva com sucesso no arquivo .env!")
                     except Exception as e:
                         messagebox.showerror("Erro", f"Erro ao salvar a API Key: {str(e)}")
                 else:
                     os.environ['OPENAI_API_KEY'] = api_key
                     messagebox.showinfo("Aviso", "API Key definida apenas para esta sessão.")
+                global api_disponivel
+                api_disponivel = verificar_api_key()
+                if api_disponivel and hasattr(self, "configurar_api_key_button"):
+                    self.configurar_api_key_button.destroy()
+                    if not hasattr(self, "usar_api_ocr_checkbox"):
+                        self.usar_api_ocr_checkbox = tk.Checkbutton(self.root, text="Usar API para ajustar OCR", variable=self.usar_api_ocr_var)
+                        self.usar_api_ocr_checkbox.pack(pady=10)
                 key_prompt_window.destroy()
             else:
                 messagebox.showerror("Erro", "Por favor, insira uma API Key válida.")
@@ -91,27 +100,11 @@ class ConfigGUI:
         """Aplica as configurações definidas pelo usuário."""
         if api_disponivel:
             usar_api_ocr = self.usar_api_ocr_var.get()
-            # Carregar o conteúdo existente do .env
-            env_path = ".env"
-            if os.path.exists(env_path):
-                with open(env_path, "r") as file:
-                    lines = file.readlines()
-            else:
-                lines = []
-
-            # Atualizar ou adicionar a variável USAR_API_OCR
-            with open(env_path, "w") as file:
-                found = False
-                for line in lines:
-                    if line.startswith("USAR_API_OCR="):
-                        file.write(f"USAR_API_OCR={usar_api_ocr}\n")
-                        found = True
-                    else:
-                        file.write(line)
-                if not found:
-                    file.write(f"USAR_API_OCR={usar_api_ocr}\n")
-
-            load_dotenv()
+            try:
+                set_key(str(ENV_PATH), "USAR_API_OCR", str(usar_api_ocr))
+                load_dotenv(str(ENV_PATH))
+            except Exception as e:
+                messagebox.showerror("Erro", f"Erro ao salvar a configuração: {str(e)}")
 
     def cancelar(self) -> None:
         """Fecha a janela de configuração sem salvar as alterações."""
