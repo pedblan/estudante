@@ -8,33 +8,33 @@
 
 """Este script contém funções que são empregadas nas tarefas principais do aplicativo."""
 
-import yt_dlp
+import io
 import math
+import os
+import re
+import subprocess
+import sys
+import warnings
+from pathlib import Path
+from typing import List, Tuple, Union
+
 import ffmpeg
 import fitz
-from src.utils_ia import *
-import re
-from docx.shared import Pt, Cm
-import subprocess
 import pytesseract
+import yt_dlp
 from PIL import Image
-import io
-from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx import Document
-from typing import Tuple, List, Union
-import warnings
-import os
-import sys
+from docx.enum.text import WD_ALIGN_PARAGRAPH
+from docx.shared import Cm, Pt
+from src.paths import OUTPUT_DIR, TEMP_DIR
+from src.utils_ia import ajustar_texto, transcrever
+
+# Pastas temporária e de saída
+TEMP_FOLDER = TEMP_DIR
+OUTPUT_FOLDER = OUTPUT_DIR
 
 
-# Definir a pasta temporária e o caminho de destino
-TEMP_FOLDER = 'temp'
-os.makedirs(TEMP_FOLDER, exist_ok=True)  # Cria a pasta 'temp' se não existir
-PASTA_DESTINO = './saida'
-os.makedirs(PASTA_DESTINO, exist_ok=True)  # Cria a pasta 'temp' se não existir
-
-
-def download_yt(youtube_url: str) -> Tuple[Union[str, None], str]:
+def download_yt(youtube_url: str, temp_folder: Path = TEMP_FOLDER) -> Tuple[Union[str, None], str]:
     """Extrai áudio de vídeo de streaming e o grava em temp.
 
     Args:
@@ -45,31 +45,33 @@ def download_yt(youtube_url: str) -> Tuple[Union[str, None], str]:
     """
     try:
         ydl_opts = {
-            'format': 'bestaudio/best',
-            'postprocessors': [{
-                'key': 'FFmpegExtractAudio',
-                'preferredcodec': 'mp3',
-                'preferredquality': '192'
-            }],
-            'outtmpl': os.path.join(TEMP_FOLDER, 'temp.%(ext)s')  # Salva na pasta temp com o título do vídeo
+            "format": "bestaudio/best",
+            "postprocessors": [
+                {
+                    "key": "FFmpegExtractAudio",
+                    "preferredcodec": "mp3",
+                    "preferredquality": "192",
+                }
+            ],
+            "outtmpl": str(temp_folder / "temp.%(ext)s"),
         }
 
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-            print("Baixando vídeo...")
-            info_dict = ydl.extract_info(youtube_url, download=True)
-            title = info_dict.get('title')
-            ext = info_dict.get('ext', 'mp3')  # Assume extensão mp3 como padrão
+            info = ydl.extract_info(youtube_url, download=True)
+            title = info.get("title")
 
-        print("Extraindo áudio do vídeo...")
-        file_path = f"{TEMP_FOLDER}/temp.mp3"
-
+        file_path = str(temp_folder / "temp.mp3")
         return title, file_path
 
     except Exception as e:
-        return None, f"Ocorreu um erro ao baixar o áudio do streaming: {str(e)}"
+        return None, str(e)
 
 
-def dividir_audio(caminho_audio: str = 'temp/temp.mp3', chunk_size_mb: int = 8) -> Tuple[Union[str, None], List[str], Union[float, None]]:
+def dividir_audio(
+    caminho_audio: str,
+    chunk_size_mb: int = 8,
+    temp_folder: Path = TEMP_FOLDER,
+) -> Tuple[Union[str, None], List[str], Union[float, None]]:
     """Divide um arquivo de áudio.
 
     Args:
@@ -79,12 +81,11 @@ def dividir_audio(caminho_audio: str = 'temp/temp.mp3', chunk_size_mb: int = 8) 
     Returns:
         tuple: Título e uma lista com o caminho de cada parte.
     """
-    print("Analisando áudio...")
     try:
         if not os.path.exists(caminho_audio):
             raise FileNotFoundError(f"Arquivo de áudio não encontrado: {caminho_audio}")
 
-        titulo = os.path.splitext(os.path.basename(caminho_audio))[0]
+        titulo = Path(caminho_audio).stem
         chunk_size_bytes = chunk_size_mb * 1024 * 1024
 
         # Tenta obter informações sobre o arquivo de áudio
@@ -96,25 +97,24 @@ def dividir_audio(caminho_audio: str = 'temp/temp.mp3', chunk_size_mb: int = 8) 
         num_chunks = math.ceil(file_size / chunk_size_bytes)  # Garante que o último pedaço será incluído
         chunk_duration = duration / num_chunks  # Divide a duração igualmente pelos chunks
 
-        chunk_paths = []
+        chunk_paths: List[str] = []
         for i in range(num_chunks):
-            chunk_file = os.path.join(TEMP_FOLDER, f"chunk_{i}{os.path.splitext(caminho_audio)[1]}")
+            chunk_file = temp_folder / f"chunk_{i}{os.path.splitext(caminho_audio)[1]}"
 
             try:
-                ffmpeg.input(caminho_audio, ss=i * chunk_duration, t=chunk_duration).output(chunk_file).run(
+                ffmpeg.input(caminho_audio, ss=i * chunk_duration, t=chunk_duration).output(str(chunk_file)).run(
                     overwrite_output=True)
-                chunk_paths.append(chunk_file)
-            except ffmpeg.Error as e:
-                print(f"Erro ao processar o chunk {i}: {str(e)}")
+                chunk_paths.append(str(chunk_file))
+            except ffmpeg.Error:
+                continue
 
         return titulo, chunk_paths, duration
 
-    except Exception as e:
-        print(f"Erro ao dividir o áudio: {str(e)}")
+    except Exception:
         return None, [], None
 
 
-def gravar_documento(titulo: str, doc: Document) -> str:
+def gravar_documento(titulo: str, doc: Document, output_folder: Path = OUTPUT_FOLDER) -> str:
     """Grava o documento Word no desktop.
 
     Args:
@@ -124,28 +124,23 @@ def gravar_documento(titulo: str, doc: Document) -> str:
     Returns:
         str: Caminho do arquivo ou uma mensagem de erro.
     """
-    print("Salvando documento...")
     try:
-        file_path = normalizar_nome_do_arquivo(titulo)
+        file_path = normalizar_nome_do_arquivo(titulo, output_folder)
         doc.save(file_path)
-        print(f"Documento salvo na pasta saída: {file_path}")
         return file_path
     except Exception as e:
-        print(f"Erro ao tentar salvar o documento: {str(e)}")
         return f"Erro ao tentar salvar o documento: {str(e)}"
 
 
-def limpar_temp() -> None:
+def limpar_temp(temp_folder: Path = TEMP_FOLDER) -> None:
     """Limpa a pasta temporária."""
-    print("Apagando arquivos temporários...")
     try:
-        for filename in os.listdir(TEMP_FOLDER):
-            file_path = os.path.join(TEMP_FOLDER, filename)
-            if os.path.isfile(file_path):
-                os.remove(file_path)
-        print("Pasta temporária limpa com sucesso.")
-    except Exception as e:
-        print(f"Erro ao limpar a pasta 'temp': {str(e)}")
+        for filename in os.listdir(temp_folder):
+            file_path = temp_folder / filename
+            if file_path.is_file():
+                file_path.unlink()
+    except Exception:
+        pass
 
 
 def extrair_texto(caminho_arquivo: str) -> Tuple[str, str]:
@@ -157,11 +152,11 @@ def extrair_texto(caminho_arquivo: str) -> Tuple[str, str]:
     Returns:
         tuple: Título e texto extraído.
     """
-    print("Extraindo texto do arquivo...")
     try:
         # Verifica a extensão do arquivo
-        extensao = os.path.splitext(caminho_arquivo)[1].lower()
-        titulo = os.path.splitext(caminho_arquivo)[0]
+        caminho = Path(caminho_arquivo)
+        extensao = caminho.suffix.lower()
+        titulo = str(caminho.with_suffix(''))
 
         if extensao == '.pdf':
             # Extração de texto para arquivos PDF
@@ -193,23 +188,20 @@ def abrir_doc_produzido(caminho_arquivo: str) -> Union[bool, None]:
     Returns:
         bool: True se o arquivo foi aberto com sucesso, None caso contrário.
     """
-    print("Abrindo documento...")
     try:
-        if os.path.exists(caminho_arquivo):
+        caminho = Path(caminho_arquivo)
+        if caminho.exists():
             if os.name == 'nt':  # Para Windows
                 # Usa o subprocess para chamar o start do Windows de forma mais segura
-                subprocess.run(['start', caminho_arquivo], shell=True)
+                subprocess.run(['start', str(caminho)], shell=True)
             elif os.name == 'posix':  # Para Mac/Linux
                 # Usa subprocess para abrir arquivos de forma segura, substituindo os.system
-                subprocess.run(['open', caminho_arquivo], check=True)
-            print(f"Abrindo o arquivo Word: {caminho_arquivo}")
+                subprocess.run(['open', str(caminho)], check=True)
             return True
         else:
-            print(f"Arquivo não encontrado: {caminho_arquivo}")
             return None
 
-    except Exception as e:
-        print(f"Erro ao tentar abrir o arquivo: {str(e)}")
+    except Exception:
         return None
 
 
@@ -218,7 +210,7 @@ def gravar_audio() -> None:
     pass
 
 
-def normalizar_nome_do_arquivo(titulo: str) -> str:
+def normalizar_nome_do_arquivo(titulo: str, output_folder: Path = OUTPUT_FOLDER) -> str:
     """Retorna caminho do arquivo normalizado, removendo caracteres problemáticos e garantindo que o nome seja seguro.
 
     Args:
@@ -229,7 +221,7 @@ def normalizar_nome_do_arquivo(titulo: str) -> str:
     """
     # Substitui caracteres inválidos por underscores e garante que o título seja seguro
     titulo = re.sub(r'[ \\/*?:"<>|()]+', "_", titulo)
-    return os.path.join(PASTA_DESTINO, f"{titulo}.docx")
+    return str(output_folder / f"{titulo}.docx")
 
 
 def adicionar_ao_word(doc: Document, trecho_transcrito: str, max_palavras: int = 80) -> Union[Document, None]:
@@ -340,7 +332,6 @@ def transcrever_partes(lista_de_partes: List[str], idioma: str, api: bool, durac
     tempo_atual = 0
 
     for i, parte in enumerate(lista_de_partes):
-        print(f"Analisando parte {i} de {len(lista_de_partes)}.")
         try:
             # Transcrever a parte
             trecho_transcrito = transcrever(parte, idioma, api)
@@ -356,9 +347,9 @@ def transcrever_partes(lista_de_partes: List[str], idioma: str, api: bool, durac
                 # Atualizar o tempo atual para o próximo trecho
                 tempo_atual += duracao_por_parte
             else:
-                print(f"Parte {i} não foi transcrita corretamente.")
-        except Exception as e:
-            print(f"Erro ao transcrever a parte {i}: {str(e)}")
+                pass
+        except Exception:
+            pass
 
     return doc
 
@@ -424,7 +415,7 @@ def reconhecer_ocr(caminho_arquivo: str, ajustar_com_api: bool) -> Tuple[str, st
             texto_revisado += texto_ocr
 
     documento.close()
-    titulo = os.path.splitext(os.path.basename(caminho_arquivo))[0]
+    titulo = Path(caminho_arquivo).stem
 
     return titulo, texto_revisado
 
