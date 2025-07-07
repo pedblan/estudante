@@ -40,6 +40,34 @@ I even tried to use this library based in Rust, a language I had never even hear
 Another task that must be done is to improve the security of the user’s API key (it’s storaged in an env file).
 That's not very safe, I guess, but I think this flaw can be forgiven since OpenAI has plenty of limits users can add to restrict abuse of their API keys.
 
+#### System dependencies
+Estudante needs a few command line tools besides Python:
+
+- Python 3.12 or newer
+- Git
+- FFmpeg
+- Tesseract OCR
+
+You can install them with your system's package manager. Examples:
+
+```bash
+# macOS
+brew install git ffmpeg tesseract
+
+# Ubuntu / Debian
+sudo apt update
+sudo apt install git ffmpeg tesseract-ocr
+```
+
+```powershell
+# Windows (PowerShell)
+winget install Git.Git
+winget install Gyan.FFmpeg
+winget install UB-Mannheim.Tesseract-OCR
+```
+
+Make sure `ffmpeg` and `tesseract` are available in your `PATH` so the GUI can detect them.
+
 #### Configuring `OPENAI_API_KEY`
 This program reads your OpenAI key from the `OPENAI_API_KEY` environment variable.  
 On Unix‑like systems, you can export it before running the app:
