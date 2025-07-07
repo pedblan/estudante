@@ -7,6 +7,7 @@ from src.pdf.pdf import PDFGUI
 from src.edicao.edicao import EdicaoGUI
 from src.config.config import ConfigGUI
 from PIL import Image, ImageTk
+from src.utils.load_env import BASE_DIR
 from src.requisitos import verificar_ffmpeg_instalado, verificar_api_key
 import webbrowser
 import os
@@ -24,7 +25,7 @@ class MainGUI:
         """
         self.root = root
         self.root.title("Estudante v1.3")
-        self.root.iconbitmap("src/icone.ico")
+        self.root.iconbitmap(str(BASE_DIR / "src" / "icone.ico"))
 
         # Referências aos botões que dependem da API
         self.botao_resumo = None
@@ -68,7 +69,7 @@ class MainGUI:
             comando (callable): A função a ser chamada quando o botão for clicado.
             estado (str, optional): O estado inicial do botão. Padrão é tk.NORMAL.
         """
-        imagem = Image.open(caminho_imagem)
+        imagem = Image.open(BASE_DIR / caminho_imagem)
         imagem = imagem.resize((50, 50), Image.LANCZOS)
         icone = ImageTk.PhotoImage(imagem)
         botao = tk.Button(frame, image=icone, text=texto, compound="top", command=comando, state=estado)

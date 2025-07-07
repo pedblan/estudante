@@ -1,6 +1,7 @@
 import tkinter as tk
 from typing import Optional, Tuple, Callable
 from PIL import Image, ImageTk
+from src.utils.load_env import BASE_DIR
 
 
 class BaseWindow:
@@ -45,7 +46,7 @@ def abrir_janela_log(root: tk.Tk, mostrar_log_var: Optional[tk.BooleanVar] = Non
 
 def imagem_na_janela_secundaria(root, caminho_arquivo_imagem: str) -> None:
     # Imagem no topo da janela
-    imagem = Image.open(caminho_arquivo_imagem)
+    imagem = Image.open(BASE_DIR / caminho_arquivo_imagem)
     imagem = imagem.resize((100, 100), Image.LANCZOS)  # Redimensionar a imagem
     icone = ImageTk.PhotoImage(imagem)
     imagem_label = tk.Label(root, image=icone)
