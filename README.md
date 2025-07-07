@@ -50,6 +50,7 @@ Estudante needs a few command line tools besides Python:
 
 You can install them with your system's package manager. Examples:
 
+
 ```bash
 # macOS
 brew install git ffmpeg tesseract
@@ -67,6 +68,8 @@ winget install UB-Mannheim.Tesseract-OCR
 ```
 
 Make sure `ffmpeg` and `tesseract` are available in your `PATH` so the GUI can detect them.
+If you prefer, run `scripts/install_dependencies.sh` and confirm when prompted.
+
 
 #### Configuring `OPENAI_API_KEY`
 This program reads your OpenAI key from the `OPENAI_API_KEY` environment variable.  
