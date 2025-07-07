@@ -91,11 +91,12 @@ def desbloquear(caminho_arquivo: str) -> Union[bool, None]:
         Union[bool, None]: Retorna True se o PDF foi desbloqueado com sucesso,
         None caso contrário.
     """
-    pdf = pikepdf.open(caminho_arquivo, allow_overwriting_input=True)
     try:
         print("Desbloqueando PDF...")
-        pdf.save(caminho_arquivo)
+        with pikepdf.open(caminho_arquivo, allow_overwriting_input=True) as pdf:
+            pdf.save(caminho_arquivo)
         print(f"PDF {caminho_arquivo} desbloqueado com sucesso!")
+        return True
     except Exception as e:
         print(f"Erro no desbloqueio do PDF: {str(e)}")
         return False
