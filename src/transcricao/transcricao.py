@@ -7,7 +7,11 @@ from dotenv import load_dotenv
 import os
 
 from src.utils import download_yt, dividir_audio, transcrever_partes, gravar_documento, abrir_doc_produzido, limpar_temp, suprimir_avisos
-from src.utils_gui import imagem_na_janela_secundaria, checkbox_mostrar_log_simplificado
+from src.utils_gui import (
+    imagem_na_janela_secundaria,
+    checkbox_mostrar_log_simplificado,
+    BaseWindow,
+)
 # Carrega as variáveis de ambiente do arquivo .env
 load_dotenv()
 
@@ -17,17 +21,16 @@ api_disponivel = api_key is not None
 
 caminho_arquivo_imagem = "src/transcricao/transcrever.png"
 
-class TranscricaoGUI:
+class TranscricaoGUI(BaseWindow):
     def __init__(self, root: tk.Tk) -> None:
         """Inicializa a GUI de transcrição.
 
         Args:
             root (tk.Tk): A instância raiz do Tkinter.
         """
-        self.root = root
-        self.root.title("Transcrever")
+        super().__init__(root, "Transcrever")
 
-        imagem_na_janela_secundaria(self.root, caminho_arquivo_imagem)
+        imagem_na_janela_secundaria(self.main_frame, caminho_arquivo_imagem)
 
         # Variáveis de controle
         self.tipo_midia_var = tk.StringVar(value="audio")
@@ -37,26 +40,36 @@ class TranscricaoGUI:
         self.mostrar_log_var = tk.BooleanVar(value=False)  # Variável de controle para o checkbox
 
         # Botões de rádio para selecionar o tipo de mídia
-        tk.Label(root, text="Escolha o tipo de mídia:").pack(pady=5)
-        tk.Radiobutton(root, text="Arquivo de Áudio", variable=self.tipo_midia_var, value="audio",
-                       command=self.toggle_input).pack()
-        tk.Radiobutton(root, text="Vídeo do YouTube", variable=self.tipo_midia_var, value="youtube",
-                       command=self.toggle_input).pack()
+        tk.Label(self.main_frame, text="Escolha o tipo de mídia:").pack(pady=5)
+        tk.Radiobutton(
+            self.main_frame,
+            text="Arquivo de Áudio",
+            variable=self.tipo_midia_var,
+            value="audio",
+            command=self.toggle_input,
+        ).pack()
+        tk.Radiobutton(
+            self.main_frame,
+            text="Vídeo do YouTube",
+            variable=self.tipo_midia_var,
+            value="youtube",
+            command=self.toggle_input,
+        ).pack()
 
         # Frame para upload de áudio
-        self.frame_audio = tk.Frame(root)
+        self.frame_audio = tk.Frame(self.main_frame)
         tk.Label(self.frame_audio, text="Escolha o arquivo de áudio:").pack()
         tk.Button(self.frame_audio, text="Selecionar arquivo de áudio", command=self.processar_audio).pack()
 
         # Frame para URL do YouTube (inicialmente escondido)
-        self.frame_youtube = tk.Frame(root)
+        self.frame_youtube = tk.Frame(self.main_frame)
         tk.Label(self.frame_youtube, text="Insira o link do YouTube:").pack()
         self.youtube_url_entry = tk.Entry(self.frame_youtube, width=50)
         self.youtube_url_entry.pack()
         self.frame_youtube.pack_forget()
 
         # Frame para escolha do idioma
-        self.frame_idioma = tk.Frame(root)
+        self.frame_idioma = tk.Frame(self.main_frame)
         tk.Label(self.frame_idioma, text="Escolha o idioma:").pack()
         opcoes_idioma = ["pt", "en", "es", "fr", "it"]
         self.menu_idioma = tk.OptionMenu(self.frame_idioma, self.idioma_var, *opcoes_idioma)
@@ -67,7 +80,7 @@ class TranscricaoGUI:
         self.whisper_model_var = tk.StringVar(value="base")
 
         # Frame para escolha do modelo Whisper (aparece apenas quando Whisper Local é selecionado)
-        self.frame_whisper_model = tk.Frame(root)
+        self.frame_whisper_model = tk.Frame(self.main_frame)
         tk.Label(self.frame_whisper_model, text="Escolha o modelo Whisper local:").pack()
         opcoes_whisper_model = ["tiny", "base", "small", "medium", "large"]
         self.menu_whisper_model = tk.OptionMenu(self.frame_whisper_model, self.whisper_model_var,
@@ -75,20 +88,20 @@ class TranscricaoGUI:
         self.menu_whisper_model.pack()
 
         self.metodo_var.trace_add('write', self.toggle_whisper_model_frame)
-        self.frame_metodo = tk.Frame(root)
+        self.frame_metodo = tk.Frame(self.main_frame)
         tk.Label(self.frame_metodo, text="Escolha o método de transcrição:").pack()
         tk.Radiobutton(self.frame_metodo, text="Usar API da OpenAI", variable=self.metodo_var, value="api",
                        state=tk.NORMAL if api_disponivel else tk.DISABLED).pack()
         tk.Radiobutton(self.frame_metodo, text="Usar Whisper Local", variable=self.metodo_var, value="local").pack()
 
         # Checkbox para timestamp
-        self.frame_timestamp = tk.Frame(root)
+        self.frame_timestamp = tk.Frame(self.main_frame)
         self.checkbox_timestamp = tk.Checkbutton(self.frame_timestamp, text="Com timestamp",
                                                  variable=self.timestamp_var)
         self.checkbox_timestamp.pack()
 
         # Botão Enviar
-        self.botao_enviar = tk.Button(root, text="Enviar", command=self.enviar)
+        self.botao_enviar = tk.Button(self.main_frame, text="Enviar", command=self.enviar)
         self.botao_enviar.pack(pady=10)
 
         # Inicialmente, mostrar apenas a seleção de áudio
@@ -98,7 +111,7 @@ class TranscricaoGUI:
 
         # Checkbox para controlar logs simplificados
         self.frame_timestamp.pack(pady=5)
-        checkbox_mostrar_log_simplificado(root, self.mostrar_log_var)
+        checkbox_mostrar_log_simplificado(self.main_frame, self)
 
 
 

@@ -6,42 +6,41 @@ from PIL import Image, ImageTk
 from docx import Document
 
 from src.utils import extrair_texto, adicionar_com_subtitulos, gravar_documento, abrir_doc_produzido, limpar_temp
-from src.utils_gui import imagem_na_janela_secundaria
+from src.utils_gui import imagem_na_janela_secundaria, BaseWindow
 from src.utils_ia import resumir_texto
 
 
-class ResumoGUI:
+class ResumoGUI(BaseWindow):
     def __init__(self, root: tk.Tk) -> None:
         """Inicializa a GUI de resumo.
 
         Args:
             root (tk.Tk): A instância raiz do Tkinter.
         """
-        self.root = root
-        self.root.title("Resumo")
+        super().__init__(root, "Resumo")
         caminho_arquivo_imagem = "src/resumo/resumir.png"
 
         # Imagem no topo da janela
-        imagem_na_janela_secundaria(self.root, caminho_arquivo_imagem)
+        imagem_na_janela_secundaria(self.main_frame, caminho_arquivo_imagem)
 
         # Frame para upload de texto
-        tk.Label(root, text="Escolha o arquivo de texto:").pack()
-        tk.Button(root, text="Selecionar arquivo de texto", command=self.selecionar_texto).pack(pady=10)
+        tk.Label(self.main_frame, text="Escolha o arquivo de texto:").pack()
+        tk.Button(self.main_frame, text="Selecionar arquivo de texto", command=self.selecionar_texto).pack(pady=10)
 
         # Seleção do modo de resumo
-        tk.Label(root, text="Escolha o modo de resumo:").pack()
+        tk.Label(self.main_frame, text="Escolha o modo de resumo:").pack()
         self.modo_resumo = tk.StringVar(value="geral")
         modos = [("Geral", "geral"), ("Jurisprudência", "jurisprudencia"), ("Retórica", "retorica"), ("Personalizado", "personalizado")]
         for texto, valor in modos:
-            tk.Radiobutton(root, text=texto, variable=self.modo_resumo, value=valor, command=self.toggle_prompt).pack(anchor=tk.W)
+            tk.Radiobutton(self.main_frame, text=texto, variable=self.modo_resumo, value=valor, command=self.toggle_prompt).pack(anchor=tk.W)
 
         # Caixa de texto para o prompt personalizado
-        self.prompt_text = tk.Text(root, height=10, width=50)
+        self.prompt_text = tk.Text(self.main_frame, height=10, width=50)
         self.prompt_text.pack(padx=20, pady=10)
         self.prompt_text.pack_forget()
 
         # Botão Enviar
-        self.botao_enviar = tk.Button(root, text="Enviar", command=self.enviar_resumo, state=tk.DISABLED if not hasattr(self, 'caminho_texto') else tk.NORMAL)
+        self.botao_enviar = tk.Button(self.main_frame, text="Enviar", command=self.enviar_resumo, state=tk.DISABLED if not hasattr(self, 'caminho_texto') else tk.NORMAL)
         self.botao_enviar.pack(pady=10)
 
     def selecionar_texto(self) -> None:
