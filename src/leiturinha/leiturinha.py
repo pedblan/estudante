@@ -1,13 +1,13 @@
 import tkinter as tk
 from tkinter import filedialog, messagebox
 from src.leiturinha.leiturinha_utils import extrair_texto, centralizar_palavra
+from src.utils_gui import BaseWindow
 
 
-class LeiturinhaGUI:
+class LeiturinhaGUI(BaseWindow):
     def __init__(self, root: tk.Tk) -> None:
         """Inicializa a GUI da Leiturinha."""
-        self.root = root
-        self.root.title("Leiturinha - leitura rápida visual")
+        super().__init__(root, "Leiturinha - leitura rápida visual")
 
         # Configurações da interface principal
         self.setup_interface()
@@ -19,40 +19,48 @@ class LeiturinhaGUI:
 
     def setup_interface(self):
         """Configura a interface de seleção e controle."""
-        tk.Label(self.root, text="Escolha o arquivo de texto:").pack()
-        tk.Button(self.root, text="Selecionar arquivo de texto", command=self.processar_texto).pack()
+        tk.Label(self.main_frame, text="Escolha o arquivo de texto:").pack()
+        tk.Button(self.main_frame, text="Selecionar arquivo de texto", command=self.processar_texto).pack()
 
         # Configura controles de velocidade e fonte
         self.velocidade_var = tk.IntVar(value=200)
         self.slider_velocidade = tk.Scale(
-            self.root, from_=100, to=600, orient="horizontal", variable=self.velocidade_var,
+            self.main_frame,
+            from_=100,
+            to=600,
+            orient="horizontal",
+            variable=self.velocidade_var,
             label="Velocidade (palavras por minuto)"
         )
         self.slider_velocidade.pack(pady=5)
 
         self.tamanho_fonte_var = tk.IntVar(value=36)
         self.slider_fonte = tk.Scale(
-            self.root, from_=24, to=100, orient="horizontal", variable=self.tamanho_fonte_var,
+            self.main_frame,
+            from_=24,
+            to=100,
+            orient="horizontal",
+            variable=self.tamanho_fonte_var,
             label="Tamanho da Fonte"
         )
         self.slider_fonte.pack(pady=5)
 
         # Opções de tela cheia e negrito
         self.tela_cheia_var = tk.BooleanVar()
-        tk.Checkbutton(self.root, text="Tela cheia", variable=self.tela_cheia_var).pack()
+        tk.Checkbutton(self.main_frame, text="Tela cheia", variable=self.tela_cheia_var).pack()
 
         self.negrito_var = tk.BooleanVar()
-        tk.Checkbutton(self.root, text="Negritar as três primeiras letras", variable=self.negrito_var).pack()
+        tk.Checkbutton(self.main_frame, text="Negritar as três primeiras letras", variable=self.negrito_var).pack()
 
         # Botão Iniciar
-        tk.Button(self.root, text="Iniciar Leiturinha", command=self.abrir_janela_leiturinha).pack(pady=10)
+        tk.Button(self.main_frame, text="Iniciar Leiturinha", command=self.abrir_janela_leiturinha).pack(pady=10)
 
     def processar_texto(self) -> None:
         """Abre um diálogo para selecionar um arquivo de texto."""
         self.caminho_arquivo = filedialog.askopenfilename(
             filetypes=[("Arquivos de texto", "*.txt *.pdf *.docx *.html")])
         if self.caminho_arquivo:
-            tk.Label(self.root, text=f"Arquivo selecionado: {self.caminho_arquivo}").pack()
+            tk.Label(self.main_frame, text=f"Arquivo selecionado: {self.caminho_arquivo}").pack()
 
     def abrir_janela_leiturinha(self) -> None:
         """Abre a janela de exibição da Leiturinha."""

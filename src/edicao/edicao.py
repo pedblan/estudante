@@ -6,30 +6,29 @@ from PIL import Image, ImageTk
 
 from src.utils import gravar_documento, abrir_doc_produzido
 from src.utils_ia import revisar
-from src.utils_gui import imagem_na_janela_secundaria
+from src.utils_gui import imagem_na_janela_secundaria, BaseWindow
 
-class EdicaoGUI:
+class EdicaoGUI(BaseWindow):
     def __init__(self, root: tk.Tk) -> None:
         """Inicializa a GUI de edição.
 
         Args:
             root (tk.Tk): A instância raiz do Tkinter.
         """
-        self.root = root
-        self.root.title("Revisar")
+        super().__init__(root, "Revisar")
         self.idioma_var = tk.StringVar(value="pt")
 
         self.caminho_arquivo_imagem = "src/edicao/editar.png"
 
         # Imagem no topo da janela
-        imagem_na_janela_secundaria(self.root, self.caminho_arquivo_imagem)
+        imagem_na_janela_secundaria(self.main_frame, self.caminho_arquivo_imagem)
 
         # Frame para upload de DOCX
-        tk.Label(root, text="Escolha o arquivo DOCX:").pack()
-        tk.Button(root, text="Selecionar arquivo DOCX", command=self.selecionar_docx).pack(pady=10)
+        tk.Label(self.main_frame, text="Escolha o arquivo DOCX:").pack()
+        tk.Button(self.main_frame, text="Selecionar arquivo DOCX", command=self.selecionar_docx).pack(pady=10)
 
         # Frame para escolha do idioma
-        self.frame_idioma = tk.Frame(root)
+        self.frame_idioma = tk.Frame(self.main_frame)
         tk.Label(self.frame_idioma, text="Escolha o idioma:").pack()
         opcoes_idioma = ["pt", "en"]
         self.menu_idioma = tk.OptionMenu(self.frame_idioma, self.idioma_var, *opcoes_idioma)
@@ -37,7 +36,7 @@ class EdicaoGUI:
         self.frame_idioma.pack(pady=5)
 
         # Botão Enviar
-        self.botao_enviar = tk.Button(root, text="Enviar", command=self.enviar_edicao, state=tk.DISABLED)
+        self.botao_enviar = tk.Button(self.main_frame, text="Enviar", command=self.enviar_edicao, state=tk.DISABLED)
         self.botao_enviar.pack(pady=10)
 
     def selecionar_docx(self) -> None:

@@ -6,7 +6,7 @@ from PIL import Image, ImageTk
 from docx import Document
 from dotenv import load_dotenv
 from src.utils import reconhecer_ocr, adicionar_com_subtitulos, gravar_documento, abrir_doc_produzido
-from src.utils_gui import imagem_na_janela_secundaria
+from src.utils_gui import imagem_na_janela_secundaria, BaseWindow
 from src.requisitos import verificar_tesseract_instalado
 
 load_dotenv()
@@ -16,33 +16,38 @@ tesseract_instalado : bool = verificar_tesseract_instalado()
 
 
 
-class PDFGUI:
+class PDFGUI(BaseWindow):
     def __init__(self, root: tk.Tk) -> None:
         """Inicializa a GUI de OCR e desbloqueio de PDF.
 
         Args:
             root (tk.Tk): A instância raiz do Tkinter.
         """
-        self.root = root
-        self.root.title("PDF")
+        super().__init__(root, "PDF")
 
         self.caminho_arquivo_imagem = "src/pdf/pdf.png"
 
         # Imagem no topo da janela
-        imagem_na_janela_secundaria(self.root, self.caminho_arquivo_imagem)
+        imagem_na_janela_secundaria(self.main_frame, self.caminho_arquivo_imagem)
 
         # Frame para upload de PDF
-        tk.Label(root, text="Escolha o arquivo PDF:").pack()
-        tk.Button(root, text="Selecionar arquivo PDF", command=self.selecionar_pdf).pack(pady=10)
+        tk.Label(self.main_frame, text="Escolha o arquivo PDF:").pack()
+        tk.Button(self.main_frame, text="Selecionar arquivo PDF", command=self.selecionar_pdf).pack(pady=10)
 
         # Frame para escolha do modo
         self.modo_var = tk.StringVar(value="ocr")
-        tk.Label(root, text="Escolha o modo:").pack()
-        tk.Radiobutton(root, text="OCR", variable=self.modo_var, value="ocr", state=tk.NORMAL if tesseract_instalado else tk.DISABLED).pack(anchor=tk.W)
-        tk.Radiobutton(root, text="Desbloquear", variable=self.modo_var, value="desbloquear").pack(anchor=tk.W)
+        tk.Label(self.main_frame, text="Escolha o modo:").pack()
+        tk.Radiobutton(
+            self.main_frame,
+            text="OCR",
+            variable=self.modo_var,
+            value="ocr",
+            state=tk.NORMAL if tesseract_instalado else tk.DISABLED,
+        ).pack(anchor=tk.W)
+        tk.Radiobutton(self.main_frame, text="Desbloquear", variable=self.modo_var, value="desbloquear").pack(anchor=tk.W)
 
         # Botão Enviar
-        self.botao_enviar = tk.Button(root, text="Enviar", command=self.enviar, state=tk.DISABLED)
+        self.botao_enviar = tk.Button(self.main_frame, text="Enviar", command=self.enviar, state=tk.DISABLED)
         self.botao_enviar.pack(pady=10)
 
     def selecionar_pdf(self) -> None:

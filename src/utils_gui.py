@@ -3,6 +3,22 @@ from typing import Optional, Tuple, Callable
 from PIL import Image, ImageTk
 
 
+class BaseWindow:
+    """Janela base com título, ícone e frame principal."""
+
+    def __init__(self, root: tk.Tk, title: str, icon_path: str = "src/icone.ico") -> None:
+        self.root = root
+        self.root.title(title)
+        try:
+            self.root.iconbitmap(icon_path)
+        except Exception:
+            # Pode falhar em sistemas sem suporte ao formato do ícone
+            pass
+
+        self.main_frame = tk.Frame(self.root)
+        self.main_frame.pack(padx=10, pady=10)
+
+
 def configurar_log(root: tk.Tk, mostrar_log_var: Optional[tk.BooleanVar] = None) -> Tuple[tk.Frame, tk.Text, Callable[[str], None]]:
     """Configura um frame de log na janela root."""
     log_frame = tk.Frame(root)
