@@ -95,7 +95,10 @@ class TranscricaoGUI:
         self.toggle_input()
         self.frame_metodo.pack(pady=5)
         self.frame_whisper_model.pack_forget()
+
+        # Checkbox para controlar logs simplificados
         self.frame_timestamp.pack(pady=5)
+        checkbox_mostrar_log_simplificado(root, self.mostrar_log_var)
 
 
 

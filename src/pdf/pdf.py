@@ -6,7 +6,7 @@ from PIL import Image, ImageTk
 from docx import Document
 from dotenv import load_dotenv
 from src.utils import reconhecer_ocr, adicionar_com_subtitulos, gravar_documento, abrir_doc_produzido
-from src.utils_gui import imagem_na_janela_secundaria, checkbox_mostrar_log_simplificado
+from src.utils_gui import imagem_na_janela_secundaria
 from src.requisitos import verificar_tesseract_instalado
 
 load_dotenv()
