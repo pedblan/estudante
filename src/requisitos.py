@@ -1,15 +1,16 @@
 import subprocess
-import os, stat
-from src.utils import PASTA_DESTINO
+import os
+import stat
 import platform
+from src.paths import OUTPUT_DIR
 
 
 def definir_permissoes() -> None:
     """Define permissões de leitura, escrita e execução para o diretório especificado."""
     try:
-        os.chmod(PASTA_DESTINO, stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO)
+        os.chmod(OUTPUT_DIR, stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO)
     except PermissionError:
-        print(f"Permissão negada ao tentar definir permissões para {PASTA_DESTINO}. Rode o programa com privilégios de administrador.")
+        print(f"Permissão negada ao tentar definir permissões para {OUTPUT_DIR}. Rode o programa com privilégios de administrador.")
     except Exception as e:
         print(f"Erro ao definir permissões: {e}")
 
