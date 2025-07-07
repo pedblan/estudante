@@ -14,6 +14,7 @@ def definir_permissoes(diretorio: Path = OUTPUT_DIR) -> bool:
     except Exception:
         return False
 
+
 def verificar_api_key() -> bool:
     """Verifica se a chave da API está configurada.
 

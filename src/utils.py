@@ -60,6 +60,7 @@ def download_yt(youtube_url: str, temp_folder: Path = TEMP_FOLDER) -> Tuple[Unio
             info = ydl.extract_info(youtube_url, download=True)
             title = info.get("title")
 
+
         file_path = str(temp_folder / "temp.mp3")
         return title, file_path
 
@@ -72,6 +73,7 @@ def dividir_audio(
     chunk_size_mb: int = 8,
     temp_folder: Path = TEMP_FOLDER,
 ) -> Tuple[Union[str, None], List[str], Union[float, None]]:
+
     """Divide um arquivo de áudio.
 
     Args:
@@ -100,13 +102,13 @@ def dividir_audio(
         chunk_paths: List[str] = []
         for i in range(num_chunks):
             chunk_file = temp_folder / f"chunk_{i}{os.path.splitext(caminho_audio)[1]}"
-
             try:
                 ffmpeg.input(caminho_audio, ss=i * chunk_duration, t=chunk_duration).output(str(chunk_file)).run(
                     overwrite_output=True)
                 chunk_paths.append(str(chunk_file))
             except ffmpeg.Error:
                 continue
+
 
         return titulo, chunk_paths, duration
 
@@ -141,6 +143,7 @@ def limpar_temp(temp_folder: Path = TEMP_FOLDER) -> None:
                 file_path.unlink()
     except Exception:
         pass
+
 
 
 def extrair_texto(caminho_arquivo: str) -> Tuple[str, str]:
@@ -222,6 +225,7 @@ def normalizar_nome_do_arquivo(titulo: str, output_folder: Path = OUTPUT_FOLDER)
     # Substitui caracteres inválidos por underscores e garante que o título seja seguro
     titulo = re.sub(r'[ \\/*?:"<>|()]+', "_", titulo)
     return str(output_folder / f"{titulo}.docx")
+
 
 
 def adicionar_ao_word(doc: Document, trecho_transcrito: str, max_palavras: int = 80) -> Union[Document, None]:
