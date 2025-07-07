@@ -40,4 +40,27 @@ I even tried to use this library based in Rust, a language I had never even hear
 Another task that must be done is to improve the security of the user’s API key (it’s storaged in an env file).
 That's not very safe, I guess, but I think this flaw can be forgiven since OpenAI has plenty of limits users can add to restrict abuse of their API keys.
 
+#### Configuring `OPENAI_API_KEY`
+This program reads your OpenAI key from the `OPENAI_API_KEY` environment variable.  
+On Unix‑like systems, you can export it before running the app:
+
+```bash
+export OPENAI_API_KEY=your_key_here
+```
+
+On Windows CMD, use:
+
+```cmd
+set OPENAI_API_KEY=your_key_here
+```
+
+Or in PowerShell:
+
+```powershell
+$env:OPENAI_API_KEY='your_key_here'
+```
+
+You may also create a `.env` file in the project directory with the line `OPENAI_API_KEY=your_key_here`.  
+Loading the key from a file is optional but keep in mind that plain text files can be read by anyone with access to your machine, so avoid committing `.env` to version control.
+
 Well, I hope you enjoyed reading this as much as I enjoyed making the app. Thanks again for the course!
